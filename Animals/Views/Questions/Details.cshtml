@@ -1,0 +1,78 @@
+﻿@model Animals.Models.Questions
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Questions</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.IDforUser)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IDforUser)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.IDforDestination)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IDforDestination)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Date)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Date)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Topic)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Topic)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.IsPublic)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IsPublic)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
