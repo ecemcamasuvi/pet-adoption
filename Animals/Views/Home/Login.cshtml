@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="p-1 bg-secondary .w-50 mx-auto my-5 .mh-100 " style="height:708px; width:813px">
+
+    <div class="p-3 bg-light " style="height:700px;width:400px;display:inline-flex">
+
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <p class="text-center h3">Üye Girişi</p>
+            <hr /><br /><br /><br />
+
+            <div class="form-group">
+                <label for="email" class="text-center">E-Posta Adresi</label>
+                @Html.TextBox("EMail", null, new { @class = "form-control", Type = "email" })
+                @*<small class="form-text text-muted">
+                    Lütfen doğru bir e-posta adresi giriniz.
+                </small>*@
+            </div>
+
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                @Html.TextBox("Password", null, new { @class = "form-control", Type = "password" })
+            </div>
+            <br />
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Giriş Yap</button>
+
+            </div>
+
+        }
+
+    </div>
+
+    <div class="p-3 bg-light" style="height:700px;width:400px;display:inline-flex">
+
+
+        @using (Html.BeginForm("CreateUser", "User", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <p class="text-center h3">Üye Ol</p>
+            <hr />
+            <div class="clearfix mt-4">
+
+                <div class="w-50 float-left">
+                    <div class="form-group">
+                        <label for="name">Ad</label>
+                        @Html.TextBox("Name", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="w-50 float-left pl-2">
+                    <div class="form-group">
+                        <label for="lastname">Soyad</label>
+                        @Html.TextBox("LastName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="userName" class="text-center">Kullanıcı Adı</label>
+                @Html.TextBox("UserName", null, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label for="message">İletişim Bilgileri</label>
+                @Html.TextArea("Contact", null, new { @class = "form-control", Rows = "3", Style = "resize:none" })
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-Posta</label>
+                @Html.TextBox("EMail", null, new { @class = "form-control", Type = "email" })
+            </div>
+
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                @Html.TextBox("Password", null, new { @class = "form-control", Type = "password" })
+            </div>
+            @* Add confirm password later *@
+
+            @*Onay checkbox'ı olmuyor off:(
+            <div class="custom-control custom-checkbox">
+                @Html.CheckBox("Confirm", new { @class = "custom-control-input", Type = "checkbox" })
+                <label class="custom-control-label" for="ch">Bilgilerimi Onaylıyorum</label>
+            </div>*@
+
+            <br />
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Üye Ol</button>
+
+            </div>
+        }
+    </div>
+</div>
+
+

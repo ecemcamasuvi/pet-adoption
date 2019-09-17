@@ -14,6 +14,8 @@ namespace Animals.Models
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Contact { get; set; }
+        public string EMail { get; set; }
+        public string Password { get; set; }
         public List<Questions> Questions { get; set; }
         public List<Answers> Answers { get; set; }
         public List<Demand> Demands { get; set; }

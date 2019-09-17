@@ -13,7 +13,6 @@ namespace Animals.Controllers
     public class UserController : Controller
     {
         private AdoptionContext db = new AdoptionContext();
-
         // GET: User
         public ActionResult Index()
         {
@@ -36,7 +35,7 @@ namespace Animals.Controllers
         }
 
         // GET: User/Create
-        public ActionResult Create()
+        public ActionResult CreateUser()
         {
             return View();
         }
@@ -46,7 +45,7 @@ namespace Animals.Controllers
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserID,UserName,Name,LastName,Contact")] Users users)
+        public ActionResult CreateUser([Bind(Include = "UserID,UserName,Name,LastName,Contact,EMail,Password")] Users users)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +77,7 @@ namespace Animals.Controllers
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,UserName,Name,LastName,Contact")] Users users)
+        public ActionResult Edit([Bind(Include = "UserID,UserName,Name,LastName,Contact,EMail,Password")] Users users)
         {
             if (ModelState.IsValid)
             {

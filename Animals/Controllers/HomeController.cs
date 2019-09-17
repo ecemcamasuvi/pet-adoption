@@ -15,5 +15,18 @@ namespace Animals.Controllers
         {
             return View(context.Users.ToList());
         }
+        [HttpGet]
+        public ActionResult Login()
+        {
+            
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(string EMail, string Password)
+        {
+            Users user = context.Users.Where(i => i.EMail.Equals(EMail) && i.Password.Equals(Password)).FirstOrDefault();
+            Session["UserID"] = user.UserID;
+            return View("Profile", user);
+        }
     }
 }
