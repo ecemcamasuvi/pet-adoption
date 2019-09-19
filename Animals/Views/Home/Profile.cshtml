@@ -2,22 +2,100 @@
 @{
     ViewBag.Title = "View";
 }
+@if (TempData["User"] != null)
+{
+    var user = (Animals.Models.Users)TempData["User"];
+    <div class="alert alert-success" role="alert">
+        <strong>@(user.Name + " " + user.LastName)</strong> adlı kullanıcıya ait bilgiler güncellendi.
+    </div>
+}
+<div class="p-1 bg-light .w-50 mx-auto my-5 .mh-100 " style="height:708px; width:813px">
+    <div class="p-3 bg-light  " style="height:700px;width:400px;display:inline-block">
+        @using (Html.BeginForm("Edit", "User", FormMethod.Post))
+        {
+            <p class="text-center h3">Kullanıcı Bilgilerim</p>
+            <hr />
+            @Html.AntiForgeryToken()
+            @Html.Hidden("UserID",Model.UserID)
+            <div class="clearfix mt-4">
 
-<hr />
-<table class="table table-dark">
-<thead>
-    <tr>
-        <th scope="col">Ad</th>
-        <th scope="col">Soyad</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <th scope="row"></th>
-        <td>@Model.Name</td>
-        <td>@Model.LastName</td>
-    </tr>
+                <div class="w-50 float-left">
+                    <div class="form-group">
+                        <label for="name">Ad</label>
+                        @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+                    </div>
+                </div>
 
-</tbody>
-</table>
+                <div class="w-50 float-left pl-2">
+                    <div class="form-group">
+                        <label for="lastname">Soyad</label>
+                        @Html.TextBox("LastName", Model.LastName, new { @class = "form-control" })
+                    </div>
+                </div>
 
+            </div>
+
+            <div class="form-group">
+                <label for="message">İletişim Bilgileri</label>
+                @Html.TextArea("Contact", Model.Contact, new { @class = "form-control", Rows = "3", Style = "resize:none" })
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-Posta</label>
+                @Html.TextBox("EMail", Model.EMail, new { @class = "form-control", Type = "email" })
+            </div>
+            @* Add confirm password later *@
+
+            @*Onay checkbox'ı olmuyor off:(
+                <div class="custom-control custom-checkbox">
+                    @Html.CheckBox("Confirm", new { @class = "custom-control-input", Type = "checkbox" })
+                    <label class="custom-control-label" for="ch">Bilgilerimi Onaylıyorum</label>
+                </div>*@
+
+            <br />
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Güncelle</button>
+
+            </div>
+        }
+    </div>
+    <div class="p-3 bg-light " style="height:700px;width:400px;display:inline-block">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @using (Html.BeginForm("Edit", "User", FormMethod.Post))
+        {
+            <p class="text-center h3">Şifre Güncelleme</p>
+            <hr />
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label for="password">Şu Anki Şifre</label>
+                @Html.TextBox("PasswordEx", null, new { @class = "form-control", Type = "password" })
+
+            </div>
+            <div class="form-group">
+                <label for="passwordn">Yeni Şifre</label>
+                @Html.TextBox("PasswordNew", null, new { @class = "form-control", Type = "password" })
+
+            </div>
+            <div class="form-group">
+                <label for="passwordnn">Yeni Şifre(Tekrar)</label>
+                @Html.TextBox("PasswordNew2", null, new { @class = "form-control", Type = "password" })
+            </div>
+            <br /><br />
+
+            @* Add confirm password later *@
+
+            @*Onay checkbox'ı olmuyor off:(
+                <div class="custom-control custom-checkbox">
+                    @Html.CheckBox("Confirm", new { @class = "custom-control-input", Type = "checkbox" })
+                    <label class="custom-control-label" for="ch">Bilgilerimi Onaylıyorum</label>
+                </div>*@
+
+            <br />
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Güncelle</button>
+
+            </div>
+        }
+    </div>
+</div>

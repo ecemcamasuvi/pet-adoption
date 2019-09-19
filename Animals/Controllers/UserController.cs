@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -58,69 +59,86 @@ namespace Animals.Controllers
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Users users = db.Users.Find(id);
-            if (users == null)
-            {
-                return HttpNotFound();
-            }
-            return View(users);
-        }
 
         // POST: User/Edit/5
         // Aşırı gönderim saldırılarından korunmak için, lütfen bağlamak istediğiniz belirli özellikleri etkinleştirin, 
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,UserName,Name,LastName,Contact,EMail,Password")] Users users)
+        public ActionResult Edit([Bind(Include = "UserID,Name,LastName,Contact,EMail")] Users users)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(users).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var entity = db.Users.Find(users.UserID);
+                if (entity != null)
+                {
+                    entity.Name = users.Name;
+                    entity.LastName = users.LastName;
+                    entity.Contact = users.Contact;
+                    entity.EMail = users.EMail;
+                    db.SaveChanges();
+                    TempData["User"] = users;
+                    return RedirectToAction("Profile", "Home");
+                }
+                //db.Entry(users).State = EntityState.Modified;
             }
             return View(users);
         }
-
-        // GET: User/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Users users = db.Users.Find(id);
-            if (users == null)
-            {
-                return HttpNotFound();
-            }
-            return View(users);
-        }
-
-        // POST: User/Delete/5
-        [HttpPost, ActionName("Delete")]
+   /*     [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult EditPassword(int UserID, string PasswordEx, string PasswordNew, string PasswordNew2)
         {
-            Users users = db.Users.Find(id);
-            db.Users.Remove(users);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            if (PasswordEx.Equals(PasswordNew) || !PasswordNew.Equals(PasswordNew2))
             {
-                db.Dispose();
             }
-            base.Dispose(disposing);
+            else
+            {
+                var entity = db.Users.Find();
+
+                if (ModelState.IsValid)
+                {
+                    db.Entry(users).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
         }
+            return View();
     }
+    */
+    // GET: User/Delete/5
+    public ActionResult Delete(int? id)
+    {
+        if (id == null)
+        {
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        Users users = db.Users.Find(id);
+        if (users == null)
+        {
+            return HttpNotFound();
+        }
+        return View(users);
+    }
+
+    // POST: User/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public ActionResult DeleteConfirmed(int id)
+    {
+        Users users = db.Users.Find(id);
+        db.Users.Remove(users);
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            db.Dispose();
+        }
+        base.Dispose(disposing);
+    }
+}
 }
