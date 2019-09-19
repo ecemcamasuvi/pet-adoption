@@ -11,6 +11,7 @@ namespace Animals.Controllers
     {
         private AdoptionContext context = new AdoptionContext();
         // GET: Home
+        
         public ActionResult Index()
         {
             return View(context.Users.ToList());
@@ -18,7 +19,7 @@ namespace Animals.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            
+
             return View();
         }
         [HttpPost]
@@ -27,6 +28,24 @@ namespace Animals.Controllers
             Users user = context.Users.Where(i => i.EMail.Equals(EMail) && i.Password.Equals(Password)).FirstOrDefault();
             Session["UserID"] = user.UserID;
             return View("Profile", user);
+        }
+        public ActionResult Exit()
+        {
+            Session.Abandon();
+            return RedirectToAction("Index");
+        }
+        public ActionResult Profile()
+        {
+            int userID = Convert.ToInt32(Session["UserID"].ToString());
+            Users user = context.Users.Where(i => i.UserID == userID).FirstOrDefault();
+            return View("Profile",user);
+        }
+
+        public PartialViewResult LoginPartial()
+        {
+            int userID = Convert.ToInt32(Session["UserID"].ToString());
+            Users user = context.Users.Where(i => i.UserID == userID).FirstOrDefault();
+            return PartialView(user);
         }
     }
 }
