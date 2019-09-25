@@ -160,6 +160,9 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\LoginPartial.cshtml" />
+    <Content Include="Views\PetAnnouncements\AnimalTypeList.cshtml" />
+    <Content Include="Views\PetAnnouncements\AnimalBreedList.cshtml" />
+    <Content Include="Views\Home\CreateUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

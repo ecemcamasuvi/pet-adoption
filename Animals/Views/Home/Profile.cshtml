@@ -22,14 +22,21 @@
                 <div class="w-50 float-left">
                     <div class="form-group">
                         <label for="name">Ad</label>
-                        @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+                        <label>
+                            @Html.ValidationMessage("Name", "", new { @class = "text-danger" })
+                        </label>
+                        @Html.TextBox("Name", null, new { @class = "form-control" })
+
                     </div>
                 </div>
 
                 <div class="w-50 float-left pl-2">
                     <div class="form-group">
                         <label for="lastname">Soyad</label>
-                        @Html.TextBox("LastName", Model.LastName, new { @class = "form-control" })
+                        <label>
+                            @Html.ValidationMessage("LastName", "", new { @class = "text-danger" })
+                        </label>
+                        @Html.TextBox("LastName", null, new { @class = "form-control" })
                     </div>
                 </div>
 
@@ -37,12 +44,18 @@
 
             <div class="form-group">
                 <label for="message">İletişim Bilgileri</label>
-                @Html.TextArea("Contact", Model.Contact, new { @class = "form-control", Rows = "3", Style = "resize:none" })
+                <label>
+                    @Html.ValidationMessage("Contact", "", new { @class = "text-danger" })
+                </label>
+                @Html.TextArea("Contact", null, new { @class = "form-control", Rows = "3", Style = "resize:none" })
             </div>
 
             <div class="form-group">
                 <label for="email">E-Posta</label>
-                @Html.TextBox("EMail", Model.EMail, new { @class = "form-control", Type = "email" })
+                <label>
+                    @Html.ValidationMessage("EMail", "", new { @class = "text-danger" })
+                </label>
+                @Html.TextBox("EMail", null, new { @class = "form-control", Type = "email" })
             </div>
             @* Add confirm password later *@
 
@@ -59,8 +72,7 @@
             </div>
         }
     </div>
-    <div class="p-3 bg-light " style="height:700px;width:400px;display:inline-block">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="p-3 bg-light " style="height:600px;width:400px;display:inline-block">
         @using (Html.BeginForm("Edit", "User", FormMethod.Post))
         {
             <p class="text-center h3">Şifre Güncelleme</p>
@@ -91,7 +103,6 @@
                     <label class="custom-control-label" for="ch">Bilgilerimi Onaylıyorum</label>
                 </div>*@
 
-            <br />
             <div class="text-center">
                 <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Güncelle</button>
 

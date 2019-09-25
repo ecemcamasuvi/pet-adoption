@@ -33,9 +33,20 @@
                 }
                 else
                 {
-                    <li class="navbar-item">
-                        <a href="/Home/Login" class="nav-link">Üye Girişi</a>
-                    </li>
+                <li class="navbar-item">
+                    <div class="dropdown">
+
+                        <a class="nav-link btn dropdown-toggle" data-toggle="dropdown">
+                            Giriş Yap
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <a href="/Home/Login" class="dropdown-item">Giriş Yap</a>
+                            <a href="/Home/CreateUser" class="dropdown-item">Üye Ol</a>
+
+                        </div>
+                    </div>
+                </li>
 
                 }
 

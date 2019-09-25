@@ -15,6 +15,14 @@ namespace Animals.Controllers
         private AdoptionContext db = new AdoptionContext();
 
         // GET: PetAnnouncements
+        public PartialViewResult AnimalTypeList()
+        {
+            return PartialView();
+        }
+        public PartialViewResult AnimalBreedList()
+        {
+            return PartialView();
+        }
         public ActionResult Index()
         {
             return View(db.Announcements.ToList());

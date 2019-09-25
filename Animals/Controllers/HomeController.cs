@@ -11,7 +11,7 @@ namespace Animals.Controllers
     {
         private AdoptionContext context = new AdoptionContext();
         // GET: Home
-        
+
         public ActionResult Index()
         {
             return View(context.Users.ToList());
@@ -23,12 +23,45 @@ namespace Animals.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Login(string EMail, string Password)
+        public ActionResult Login([Bind(Include = "EMail,Password")] Users users)
         {
-            Users user = context.Users.Where(i => i.EMail.Equals(EMail) && i.Password.Equals(Password)).FirstOrDefault();
-            Session["UserID"] = user.UserID;
-            return View("Profile", user);
+            Users user = context.Users.Where(i => i.EMail.Equals(users.EMail) && i.Password.Equals(users.Password)).FirstOrDefault();
+            if (user != null)
+            {
+                Session["UserID"] = user.UserID;
+                return RedirectToAction("Profile");
+            }
+            else if(users.EMail!=null&&users.Password!=null)
+            {
+                ViewBag.Error = "E-mail adresi ya da parola hatalı.";
+            }
+            return View(users);
         }
+        // GET: User/Create
+        public ActionResult CreateUser()
+        {
+            return View();
+        }
+
+        // POST: User/Create
+        // Aşırı gönderim saldırılarından korunmak için, lütfen bağlamak istediğiniz belirli özellikleri etkinleştirin, 
+        // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateUser([Bind(Include = "UserID,UserName,Name,LastName,Contact,EMail,Password")] Users users)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Users.Add(users);
+                context.SaveChanges();
+                int userID = Convert.ToInt32(Session["UserID"].ToString());
+                Users user = context.Users.Where(i => i.UserID == userID).FirstOrDefault();
+                return RedirectToAction("Profile", user);
+            }
+
+            return View(users);
+        }
+
         public ActionResult Exit()
         {
             Session.Abandon();
@@ -38,14 +71,14 @@ namespace Animals.Controllers
         {
             int userID = Convert.ToInt32(Session["UserID"].ToString());
             Users user = context.Users.Where(i => i.UserID == userID).FirstOrDefault();
-            return View("Profile",user);
+            return View("Profile", user);
         }
-
         public PartialViewResult LoginPartial()
         {
             int userID = Convert.ToInt32(Session["UserID"].ToString());
             Users user = context.Users.Where(i => i.UserID == userID).FirstOrDefault();
             return PartialView(user);
         }
+       
     }
 }

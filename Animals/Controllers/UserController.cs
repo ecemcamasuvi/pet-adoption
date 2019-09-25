@@ -13,6 +13,8 @@ namespace Animals.Controllers
 {
     public class UserController : Controller
     {
+       
+
         private AdoptionContext db = new AdoptionContext();
         // GET: User
         public ActionResult Index()
@@ -35,27 +37,9 @@ namespace Animals.Controllers
             return View(users);
         }
 
-        // GET: User/Create
-        public ActionResult CreateUser()
+        public ActionResult Edit()
         {
             return View();
-        }
-
-        // POST: User/Create
-        // Aşırı gönderim saldırılarından korunmak için, lütfen bağlamak istediğiniz belirli özellikleri etkinleştirin, 
-        // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateUser([Bind(Include = "UserID,UserName,Name,LastName,Contact,EMail,Password")] Users users)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Users.Add(users);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(users);
         }
 
         // GET: User/Edit/5
@@ -82,32 +66,33 @@ namespace Animals.Controllers
                 }
                 //db.Entry(users).State = EntityState.Modified;
             }
-            return View(users);
+            return RedirectToAction("Profile", "Home",users);
         }
-   /*     [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditPassword(int UserID, string PasswordEx, string PasswordNew, string PasswordNew2)
-        {
-            if (PasswordEx.Equals(PasswordNew) || !PasswordNew.Equals(PasswordNew2))
-            {
-            }
-            else
-            {
-                var entity = db.Users.Find();
+       
+        /*     [HttpPost]
+             [ValidateAntiForgeryToken]
+             public ActionResult EditPassword(int UserID, string PasswordEx, string PasswordNew, string PasswordNew2)
+             {
+                 if (PasswordEx.Equals(PasswordNew) || !PasswordNew.Equals(PasswordNew2))
+                 {
+                 }
+                 else
+                 {
+                     var entity = db.Users.Find();
 
-                if (ModelState.IsValid)
-                {
-                    db.Entry(users).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-        }
-            return View();
-    }
-    */
-    // GET: User/Delete/5
-    public ActionResult Delete(int? id)
+                     if (ModelState.IsValid)
+                     {
+                         db.Entry(users).State = EntityState.Modified;
+                         db.SaveChanges();
+                         return RedirectToAction("Index");
+                     }
+                 }
+             }
+                 return View();
+         }
+         */
+        // GET: User/Delete/5
+        public ActionResult Delete(int? id)
     {
         if (id == null)
         {
