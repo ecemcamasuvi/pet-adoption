@@ -29,7 +29,7 @@ namespace Animals.Controllers
             if (user != null)
             {
                 Session["UserID"] = user.UserID;
-                return RedirectToAction("Profile");
+                return RedirectToAction("Profile","User",user);
             }
             else if(users.EMail!=null&&users.Password!=null)
             {
@@ -54,9 +54,10 @@ namespace Animals.Controllers
             {
                 context.Users.Add(users);
                 context.SaveChanges();
+                Session["UserID"] = users.UserID;
                 int userID = Convert.ToInt32(Session["UserID"].ToString());
                 Users user = context.Users.Where(i => i.UserID == userID).FirstOrDefault();
-                return RedirectToAction("Profile", user);
+                return RedirectToAction("Profile","User", user);
             }
 
             return View(users);
@@ -67,12 +68,7 @@ namespace Animals.Controllers
             Session.Abandon();
             return RedirectToAction("Index");
         }
-        public ActionResult Profile()
-        {
-            int userID = Convert.ToInt32(Session["UserID"].ToString());
-            Users user = context.Users.Where(i => i.UserID == userID).FirstOrDefault();
-            return View("Profile", user);
-        }
+     
         public PartialViewResult LoginPartial()
         {
             int userID = Convert.ToInt32(Session["UserID"].ToString());

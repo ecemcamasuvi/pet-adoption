@@ -140,10 +140,7 @@
     <Content Include="Views\web.config" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\User\CreateUser.cshtml" />
-    <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
-    <Content Include="Views\User\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\PetAnnouncements\Create.cshtml" />
     <Content Include="Views\PetAnnouncements\Delete.cshtml" />
@@ -158,7 +155,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\Profile.cshtml" />
+    <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\Home\LoginPartial.cshtml" />
     <Content Include="Views\PetAnnouncements\AnimalTypeList.cshtml" />
     <Content Include="Views\PetAnnouncements\AnimalBreedList.cshtml" />
