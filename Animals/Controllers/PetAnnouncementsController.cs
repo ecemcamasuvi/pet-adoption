@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Animals.Models;
@@ -54,10 +57,18 @@ namespace Animals.Controllers
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AnnouncementID,Type,Breed,Age,City,Photo,IDforUser,Date,Explanation,Title,Active")] PetAnnouncement petAnnouncement)
+        public ActionResult Create([Bind(Include = "AnnouncementID,Type,Breed,Age,City,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo)
         {
             if (ModelState.IsValid)
             {
+                var uid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
+                string foto = uid + ".jpg";
+                Photo.SaveAs(Server.MapPath(@"~\Image\") + foto);
+                petAnnouncement.IDforUser = Convert.ToInt32(Session["UserID"].ToString());
+                string format = "dd.MM.yyyy";
+                petAnnouncement.Date = DateTime.Now.ToString(format);
+                petAnnouncement.Active = true;
+                petAnnouncement.Photo = foto;
                 db.Announcements.Add(petAnnouncement);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -65,7 +76,6 @@ namespace Animals.Controllers
 
             return View(petAnnouncement);
         }
-
         // GET: PetAnnouncements/Edit/5
         public ActionResult Edit(int? id)
         {
