@@ -9,89 +9,69 @@
 </head>
 <body>
     <div>
-        <h4>PetAnnouncement</h4>
+        <h4>@Html.DisplayFor(model => model.Title)</h4>
         <hr />
-        <dl class="dl-horizontal">
+        <dl class="container dl-horizontal">
+            <dd>
+                <div class="border border-secondary" style="width: 15rem;">
+                    <img src="/Image/@Model.Photo" class="card-img-top" style="height:100%;width:100%" alt="@Model.Title">
+                </div>
+            </dd>
+            <dd>
+                <p>@Html.DisplayFor(model => model.Explanation)</p>
+            </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Type)
+                Evcil Hayvanın Türü
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.Type)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Breed)
+                Evcil Hayvanın Cinsi
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.Breed)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Age)
+                Evcil Hayvanın Yaşı
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.Age)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.City)
+                Şehir
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.City)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Photo)
+                İlanı Veren Kullanıcının Adı
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Photo)
+                @if (TempData["User"] != null)
+                {
+                    var user = (Animals.Models.Users)TempData["User"];
+                    <p>@user.UserName</p>
+                }
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.IDforUser)
+                İlan Tarihi
             </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.IDforUser)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Date)
-            </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.Date)
             </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Explanation)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Explanation)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Title)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Active)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Active)
-            </dd>
-    
+
         </dl>
     </div>
     <p>

@@ -29,7 +29,10 @@ namespace Animals.Controllers
         public ActionResult Index()
         {
             return View(db.Announcements.ToList());
+
         }
+
+
 
         // GET: PetAnnouncements/Details/5
         public ActionResult Details(int? id)
@@ -43,6 +46,7 @@ namespace Animals.Controllers
             {
                 return HttpNotFound();
             }
+            TempData["user"] = db.Users.Find(petAnnouncement.IDforUser);
             return View(petAnnouncement);
         }
 
