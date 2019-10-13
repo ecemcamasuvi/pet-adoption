@@ -24,8 +24,8 @@
             <div class="form-group">
                 <label for="type" class="text-center">Evcil Hayvanın Türü</label>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                    @Html.DropDownList("TypeId",null, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -48,8 +48,8 @@
             <div class="form-group">
                 <label for="city" class="text-center">Şehir</label>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    @Html.DropDownList("CityId",null, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model=>model.CityId, "", new { @class = "text-danger" })
                 </div>
             </div>
 

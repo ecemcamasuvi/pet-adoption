@@ -77,3 +77,6 @@ C:\Users\ecem\source\repos\Animals\Animals\obj\Debug\Animals.csproj.CoreCompileI
 C:\Users\ecem\source\repos\Animals\Animals\obj\Debug\Animals.csproj.CopyComplete
 C:\Users\ecem\source\repos\Animals\Animals\obj\Debug\Animals.dll
 C:\Users\ecem\source\repos\Animals\Animals\obj\Debug\Animals.pdb
+C:\Users\ecem\source\repos\Animals\Animals\bin\AutoMapper.dll
+C:\Users\ecem\source\repos\Animals\Animals\bin\AutoMapper.pdb
+C:\Users\ecem\source\repos\Animals\Animals\bin\AutoMapper.xml

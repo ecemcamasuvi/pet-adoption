@@ -9,7 +9,7 @@ namespace Animals.Models
 {
     public class AdoptionContext : DbContext
     {
-        public AdoptionContext():base("dbConnection")
+        public AdoptionContext() : base("dbConnection")
         {
             Database.SetInitializer(new UserInitializer());
         }
@@ -20,5 +20,8 @@ namespace Animals.Models
         public DbSet<Answers> Answers { get; set; }
         public DbSet<LikeDislikeAnswer> LikeDislikeAnswers { get; set; }
         public DbSet<Demand> Demands { get; set; }
+        public DbSet<PetType> PetTypes { get; set; }
+        public DbSet<Cities> Cities { get; set; }
+        
     }
 }

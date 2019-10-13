@@ -29,24 +29,24 @@
             <ul class="navbar-nav ml-auto">
                 @if (Session["UserID"] != null)
                 {
-                    {Html.RenderAction("LoginPartial", "Home");}
+                    { Html.RenderAction("LoginPartial", "Home"); }
                 }
                 else
                 {
-                <li class="navbar-item">
-                    <div class="dropdown">
+                    <li class="navbar-item">
+                        <div class="dropdown">
 
-                        <a class="nav-link btn dropdown-toggle" data-toggle="dropdown">
-                            Giriş Yap
-                        </a>
+                            <a class="nav-link btn dropdown-toggle" data-toggle="dropdown">
+                                Giriş Yap
+                            </a>
 
-                        <div class="dropdown-menu">
-                            <a href="/Home/Login" class="dropdown-item">Giriş Yap</a>
-                            <a href="/Home/CreateUser" class="dropdown-item">Üye Ol</a>
+                            <div class="dropdown-menu">
+                                <a href="/Home/Login" class="dropdown-item">Giriş Yap</a>
+                                <a href="/Home/CreateUser" class="dropdown-item">Üye Ol</a>
 
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
 
                 }
 
@@ -54,7 +54,24 @@
         </div>
     </nav>
     <div class="container body-content">
-        @RenderBody()
+        <div class="row">
+            @if (IsSectionDefined("RightSection"))
+            {
+                <div class="col-md-10">
+                    @RenderBody()
+                </div>
+                <div class="col-md-2">
+                    @RenderSection("RightSection")
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+
+            }
+        </div>
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>

@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -127,10 +130,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Answers.cs" />
+    <Compile Include="Models\Cities.cs" />
     <Compile Include="Models\LikeDislikeAnswer.cs" />
+    <Compile Include="Models\PetAnnouncementDTO.cs" />
     <Compile Include="Models\PetAnnouncement.cs" />
     <Compile Include="Models\AdoptionContext.cs" />
     <Compile Include="Models\Demand.cs" />
+    <Compile Include="Models\PetType.cs" />
     <Compile Include="Models\Questions.cs" />
     <Compile Include="Models\UserInitializer.cs" />
     <Compile Include="Models\Users.cs" />
@@ -160,6 +166,7 @@
     <Content Include="Views\PetAnnouncements\AnimalTypeList.cshtml" />
     <Content Include="Views\PetAnnouncements\AnimalBreedList.cshtml" />
     <Content Include="Views\Home\CreateUser.cshtml" />
+    <Content Include="Views\PetAnnouncements\List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

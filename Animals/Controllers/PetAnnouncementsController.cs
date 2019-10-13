@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Animals.Models;
+using AutoMapper;
 
 namespace Animals.Controllers
 {
@@ -20,7 +21,7 @@ namespace Animals.Controllers
         // GET: PetAnnouncements
         public PartialViewResult AnimalTypeList()
         {
-            return PartialView();
+            return PartialView(db.PetTypes.ToList());
         }
         public PartialViewResult AnimalBreedList()
         {
@@ -31,7 +32,39 @@ namespace Animals.Controllers
             return View(db.Announcements.ToList());
 
         }
+        public ActionResult List(int? type)
+        {
+            List<PetAnnouncement> announcements = db.Announcements.ToList();
+            List<PetAnnouncementDTO> destinationAnnouncements = new List<PetAnnouncementDTO>();
+            var config = new MapperConfiguration(i => { i.CreateMap<PetAnnouncement, PetAnnouncementDTO>(); });
+            IMapper mapper = config.CreateMapper();
+            foreach (var i in announcements)
+            {
+                destinationAnnouncements.Add(mapper.Map<PetAnnouncement, PetAnnouncementDTO>(i));
+            }
+            var posts = destinationAnnouncements
+                .Where(i => i.Active == true)
+                .Select(i => new PetAnnouncementDTO()
+                {
+                    IDforUser = i.IDforUser,
+                    Age = i.Age,
+                    AnnouncementID = i.AnnouncementID,
+                    Breed = i.Breed,
+                    City = i.City,
+                    Date = i.Date,
+                    Demands = i.Demands,
+                    Explanation = i.Explanation,
+                    Title = i.Title,
+                    Type = i.Type,
+                    Photo = i.Photo
+                }).AsQueryable();
 
+            if (type != null)
+            {
+                posts = posts.Where(i => i.Type.Equals(type));
+            }
+            return View(posts.ToList());
+        }
 
 
         // GET: PetAnnouncements/Details/5
@@ -53,6 +86,8 @@ namespace Animals.Controllers
         // GET: PetAnnouncements/Create
         public ActionResult Create()
         {
+            ViewBag.TypeId = new SelectList(db.PetTypes, "TypeID", "Type");
+            ViewBag.CityId = new SelectList(db.Cities, "CityID", "City");
             return View();
         }
 
@@ -61,8 +96,11 @@ namespace Animals.Controllers
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AnnouncementID,Type,Breed,Age,City,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo)
+        public ActionResult Create([Bind(Include = "AnnouncementID,TypeId,Breed,Age,CityId,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo)
         {
+           
+            ViewBag.TypeId = new SelectList(db.PetTypes, "TypeID", "Type",petAnnouncement.TypeId);
+            ViewBag.CityId = new SelectList(db.Cities, "CityID", "City",petAnnouncement.CityId);
             if (ModelState.IsValid)
             {
                 var uid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
@@ -77,7 +115,6 @@ namespace Animals.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(petAnnouncement);
         }
         // GET: PetAnnouncements/Edit/5

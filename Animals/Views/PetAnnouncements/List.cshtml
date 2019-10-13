@@ -1,5 +1,5 @@
 ﻿@using Animals.Models;
-@model IEnumerable<Animals.Models.PetAnnouncement>
+@model IEnumerable<Animals.Models.PetAnnouncementDTO>
 
 <!DOCTYPE html>
 
@@ -9,17 +9,17 @@
     <title>Index</title>
 </head>
 <body>
+    @if (Session["UserID"] != null)
+    {
+        <div container>
+            <h2>
+                @Html.ActionLink("İlan Ver ", "Create")
+            </h2>
+        </div>
+    }
+    <p>
+    </p>
     <div class="card card-body bg-light" style="width:1000px;transform:translateX(-100px);">
-        @if (Session["UserID"] != null)
-        {
-            <div container>
-                <h2>
-                    @Html.ActionLink("İlan Ver ", "Create")
-                </h2>
-            </div>
-        }
-        <p>
-        </p>
         <div class="row">
             @foreach (var i in Model)
             {
