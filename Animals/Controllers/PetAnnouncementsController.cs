@@ -32,7 +32,9 @@ namespace Animals.Controllers
             return View(db.Announcements.ToList());
 
         }
-        public ActionResult List(int? type)
+        [HttpGet]
+        [Route("PetAnnouncements/List/{typeID?}")]
+        public ActionResult List(int? typeID)
         {
             List<PetAnnouncement> announcements = db.Announcements.ToList();
             List<PetAnnouncementDTO> destinationAnnouncements = new List<PetAnnouncementDTO>();
@@ -50,18 +52,18 @@ namespace Animals.Controllers
                     Age = i.Age,
                     AnnouncementID = i.AnnouncementID,
                     Breed = i.Breed,
-                    City = i.City,
+                    CityId = i.CityId,
                     Date = i.Date,
                     Demands = i.Demands,
                     Explanation = i.Explanation,
                     Title = i.Title,
-                    Type = i.Type,
+                    TypeId = i.TypeId,
                     Photo = i.Photo
                 }).AsQueryable();
 
-            if (type != null)
+            if (typeID != null)
             {
-                posts = posts.Where(i => i.Type.Equals(type));
+                posts = posts.Where(i => i.TypeId == typeID);
             }
             return View(posts.ToList());
         }
@@ -98,9 +100,9 @@ namespace Animals.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AnnouncementID,TypeId,Breed,Age,CityId,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo)
         {
-           
-            ViewBag.TypeId = new SelectList(db.PetTypes, "TypeID", "Type",petAnnouncement.TypeId);
-            ViewBag.CityId = new SelectList(db.Cities, "CityID", "City",petAnnouncement.CityId);
+
+            ViewBag.TypeId = new SelectList(db.PetTypes, "TypeID", "Type", petAnnouncement.TypeId);
+            ViewBag.CityId = new SelectList(db.Cities, "CityID", "City", petAnnouncement.CityId);
             if (ModelState.IsValid)
             {
                 var uid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
