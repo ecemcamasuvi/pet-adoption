@@ -88,9 +88,29 @@ namespace Animals.Controllers
         // GET: PetAnnouncements/Create
         public ActionResult Create()
         {
-            ViewBag.TypeId = new SelectList(db.PetTypes, "TypeID", "Type");
+            List<SelectListItem> listTypes = new List<SelectListItem>();
+            listTypes.Add(new SelectListItem() { Text = "Lütfen seçim yapınız.", Value = "0" });
+            foreach(var item in db.PetTypes)
+            {
+                listTypes.Add(new SelectListItem() { Text = item.Type, Value = item.TypeID.ToString() });
+            }
+            ViewBag.TypeId = new SelectList(listTypes, "Value", "Text");
             ViewBag.CityId = new SelectList(db.Cities, "CityID", "City");
+            ViewBag.BreedId = new SelectList(db.Breeds, "BreedID", "Breed");
             return View();
+        }
+
+        public JsonResult GetBreeds(int? petType)
+        {
+            var breeds = db.Breeds.Where(i=>i.IdofType==petType).ToList();
+            List<SelectListItem> listBreeds = new List<SelectListItem>();
+            //listBreeds.Add(new SelectListItem() { Text = "select state", Value = "0" });
+            foreach (var item in breeds)
+            {
+                listBreeds.Add(new SelectListItem() { Text = item.Breed, Value = item.BreedID.ToString() });
+            }
+            return Json(new SelectList(listBreeds, "Value", "Text", JsonRequestBehavior.AllowGet));
+
         }
 
         // POST: PetAnnouncements/Create

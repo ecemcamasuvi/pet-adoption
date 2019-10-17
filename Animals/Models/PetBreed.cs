@@ -7,12 +7,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Animals.Models
 {
-    public class PetType
+    public class PetBreed
     {
         [Key]
-        public int TypeID { get; set; }
-        public string Type { get; set; }
+        public int BreedID { get; set; }
+        public string Breed { get; set; }
+        public int IdofType { get; set; }
+        public PetType Type { get; set; }
         public List<PetAnnouncement> Announcements { get; set; }
-        public List<PetBreed> Breeds { get; set; }
     }
 }

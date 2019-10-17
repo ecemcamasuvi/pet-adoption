@@ -11,7 +11,8 @@ namespace Animals.Models
         public int AnnouncementID { get; set; }
         public int TypeId { get; set; }
         public PetType Type { get; set; }
-        public string Breed { get; set; }
+        public int BreedId { get; set; }
+        public PetBreed Breed { get; set; }
         public string Age { get; set; }
         public int CityId { get; set; }
         public Cities City { get; set; }

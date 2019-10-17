@@ -123,6 +123,63 @@ namespace Animals.Models
                 context.Cities.Add(i);
             }
             context.SaveChanges();
+            List<PetBreed> petBreeds = new List<PetBreed>()
+            {
+                new PetBreed(){Breed="Bilinmiyor",IdofType=1},
+                new PetBreed(){Breed="British shorthair",IdofType=1},
+                new PetBreed(){Breed="Mavi Rus kedisi",IdofType=1},
+                new PetBreed(){Breed="Van kedisi",IdofType=1},
+                new PetBreed(){Breed="Siyam kedisi",IdofType=1},
+                new PetBreed(){Breed="Scottish fold",IdofType=1},
+                new PetBreed(){Breed="İran kedisi",IdofType=1},
+                new PetBreed(){Breed="Bengal kedisi",IdofType=1},
+                new PetBreed(){Breed="Sfenks kedisi",IdofType=1},
+                new PetBreed(){Breed="Chinchilla kedisi",IdofType=1},
+                new PetBreed(){Breed="Ankara kedisi",IdofType=1},
+                new PetBreed(){Breed="Norveç orman kedisi",IdofType=1},
+                new PetBreed(){Breed="Bilinmiyor",IdofType=2},
+                new PetBreed(){Breed="Kangal Köpeği",IdofType=2},
+                new PetBreed(){Breed="İngiliz Bulldog Köpeği",IdofType=2},
+                new PetBreed(){Breed="Beagle Köpeği",IdofType=2},
+                new PetBreed(){Breed="İngiliz Pointer Köpeği",IdofType=2},
+                new PetBreed(){Breed="Fransız Bulldog Köpeği",IdofType=2},
+                new PetBreed(){Breed="Jack Russell Terrier Köpeği",IdofType=2},
+                new PetBreed(){Breed="Neapolitan Mastiff Köpeği",IdofType=2},
+                new PetBreed(){Breed="Doberman Köpeği",IdofType=2},
+                new PetBreed(){Breed="Maltese Köpeği",IdofType=2},
+                new PetBreed(){Breed="Labrador Retriever Köpeği",IdofType=2},
+                new PetBreed(){Breed="Golden Retriever Köpeği",IdofType=2},
+                new PetBreed(){Breed="Pekingese Köpeği",IdofType=2},
+                new PetBreed(){Breed="Bilinmiyor",IdofType=3},
+                new PetBreed(){Breed="Japon balığı",IdofType=3},
+                new PetBreed(){Breed="Lepistes",IdofType=3},
+                new PetBreed(){Breed="Beta balığı",IdofType=3},
+                new PetBreed(){Breed="Melek",IdofType=3},
+                new PetBreed(){Breed="Neon tetra",IdofType=3},
+                new PetBreed(){Breed="Sarı prenses",IdofType=3},
+                new PetBreed(){Breed="Plati",IdofType=3},
+                new PetBreed(){Breed="Bilinmiyor",IdofType=4},
+                new PetBreed(){Breed="Muhabbet Kuşu",IdofType=4},
+                new PetBreed(){Breed="Hint Bülbülü",IdofType=4},
+                new PetBreed(){Breed="Papağan",IdofType=4},
+                new PetBreed(){Breed="Kanarya",IdofType=4},
+                new PetBreed(){Breed="Bengal İspinozu",IdofType=4},
+                new PetBreed(){Breed="Bilinmiyor",IdofType=5},
+                new PetBreed(){Breed="Bukalemun",IdofType=5},
+                new PetBreed(){Breed="Hamster",IdofType=5},
+                new PetBreed(){Breed="Kirpi",IdofType=5},
+                new PetBreed(){Breed="Maymun",IdofType=5},
+                new PetBreed(){Breed="Tarantula",IdofType=5},
+                new PetBreed(){Breed="Tavşan",IdofType=5},
+                new PetBreed(){Breed="Yılan",IdofType=5},
+                new PetBreed(){Breed="İguana",IdofType=5},
+
+            };
+            foreach (var type in petBreeds)
+            {
+                context.Breeds.Add(type);
+            }
+            context.SaveChanges();
             base.Seed(context);
         }
     }

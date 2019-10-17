@@ -136,6 +136,7 @@
     <Compile Include="Models\PetAnnouncement.cs" />
     <Compile Include="Models\AdoptionContext.cs" />
     <Compile Include="Models\Demand.cs" />
+    <Compile Include="Models\PetBreed.cs" />
     <Compile Include="Models\PetType.cs" />
     <Compile Include="Models\Questions.cs" />
     <Compile Include="Models\UserInitializer.cs" />

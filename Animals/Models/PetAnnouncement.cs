@@ -12,8 +12,6 @@ namespace Animals.Models
         [Key]
         public int AnnouncementID { get; set; }
         [Required]
-        public string Breed { get; set; }
-        [Required]
         public string Age { get; set; }
         public string Photo { get; set; }
         public int IDforUser { get; set; }
@@ -22,10 +20,12 @@ namespace Animals.Models
         [Required]
         public string Title { get; set; }
         public bool Active { get; set; }
+        public int BreedId { get; set; }
         [Required]
         public int TypeId { get; set; }
         [Required]
         public int CityId { get; set; }
+        public PetBreed Breed { get; set; }
         public Cities City { get; set; }
         public PetType Type { get; set; }
         public List<Demand> Demands { get; set; }
