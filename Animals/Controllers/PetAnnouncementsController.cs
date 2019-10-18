@@ -96,7 +96,6 @@ namespace Animals.Controllers
             }
             ViewBag.TypeId = new SelectList(listTypes, "Value", "Text");
             ViewBag.CityId = new SelectList(db.Cities, "CityID", "City");
-            ViewBag.BreedId = new SelectList(db.Breeds, "BreedID", "Breed");
             return View();
         }
 
@@ -110,7 +109,6 @@ namespace Animals.Controllers
                 listBreeds.Add(new SelectListItem() { Text = item.Breed, Value = item.BreedID.ToString() });
             }
             return Json(new SelectList(listBreeds, "Value", "Text", JsonRequestBehavior.AllowGet));
-
         }
 
         // POST: PetAnnouncements/Create
@@ -118,16 +116,18 @@ namespace Animals.Controllers
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AnnouncementID,TypeId,Breed,Age,CityId,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo)
+        public ActionResult Create([Bind(Include = "AnnouncementID,TypeId,Age,CityId,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo,int BreedId)
         {
 
             ViewBag.TypeId = new SelectList(db.PetTypes, "TypeID", "Type", petAnnouncement.TypeId);
             ViewBag.CityId = new SelectList(db.Cities, "CityID", "City", petAnnouncement.CityId);
+
             if (ModelState.IsValid)
             {
                 var uid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
                 string foto = uid + ".jpg";
                 Photo.SaveAs(Server.MapPath(@"~\Image\") + foto);
+                petAnnouncement.BreedId = BreedId;
                 petAnnouncement.IDforUser = Convert.ToInt32(Session["UserID"].ToString());
                 string format = "dd.MM.yyyy";
                 petAnnouncement.Date = DateTime.Now.ToString(format);

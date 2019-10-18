@@ -13,7 +13,6 @@ namespace Animals.Models
         public int BreedID { get; set; }
         public string Breed { get; set; }
         public int IdofType { get; set; }
-        public PetType Type { get; set; }
         public List<PetAnnouncement> Announcements { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace Animals.Models
         [Required]
         public string Title { get; set; }
         public bool Active { get; set; }
+        [Required]
         public int BreedId { get; set; }
         [Required]
         public int TypeId { get; set; }
