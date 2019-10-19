@@ -13,6 +13,5 @@ namespace Animals.Models
         public int TypeID { get; set; }
         public string Type { get; set; }
         public List<PetAnnouncement> Announcements { get; set; }
-        public List<PetBreed> Breeds { get; set; }
     }
 }

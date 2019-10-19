@@ -168,6 +168,8 @@
     <Content Include="Views\PetAnnouncements\AnimalBreedList.cshtml" />
     <Content Include="Views\Home\CreateUser.cshtml" />
     <Content Include="Views\PetAnnouncements\List.cshtml" />
+    <Content Include="Views\PetAnnouncements\CityList.cshtml" />
+    <Content Include="Views\PetAnnouncements\ListforCity.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

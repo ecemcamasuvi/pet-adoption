@@ -19,22 +19,34 @@ namespace Animals.Controllers
         private AdoptionContext db = new AdoptionContext();
 
         // GET: PetAnnouncements
+        public PartialViewResult CityList()
+        {
+            return PartialView(db.Cities.ToList());
+        }
         public PartialViewResult AnimalTypeList()
         {
             return PartialView(db.PetTypes.ToList());
         }
-        public PartialViewResult AnimalBreedList()
+        public PartialViewResult AnimalBreedList(int? typeID)
         {
-            return PartialView();
+            //if (Session["CityID"] != null)
+            //{
+            //    ViewBag.CityID = Session["CityID"].ToString();
+            //}
+            var breedList = db.Breeds.Where(i => i.IdofType == typeID);
+            return PartialView(breedList.ToList());
         }
         public ActionResult Index()
         {
-            return View(db.Announcements.ToList());
+            var announcements = db.Announcements.Include(i => i.Type);
+            announcements.Include(i => i.Breed);
+            announcements.Include(i => i.City);
+            return View(announcements.ToList());
 
         }
         [HttpGet]
-        [Route("PetAnnouncements/List/{typeID?}")]
-        public ActionResult List(int? typeID)
+        [Route("PetAnnouncements/List/{typeID?}/{breedID?}")]
+        public ActionResult List(int? typeID, int? breedID)
         {
             List<PetAnnouncement> announcements = db.Announcements.ToList();
             List<PetAnnouncementDTO> destinationAnnouncements = new List<PetAnnouncementDTO>();
@@ -51,7 +63,7 @@ namespace Animals.Controllers
                     IDforUser = i.IDforUser,
                     Age = i.Age,
                     AnnouncementID = i.AnnouncementID,
-                    Breed = i.Breed,
+                    BreedId = i.BreedId,
                     CityId = i.CityId,
                     Date = i.Date,
                     Demands = i.Demands,
@@ -60,10 +72,72 @@ namespace Animals.Controllers
                     TypeId = i.TypeId,
                     Photo = i.Photo
                 }).AsQueryable();
-
+            if (Session["CityPosts"] != null)
+            {
+                posts = (IQueryable<PetAnnouncementDTO>)Session["CityPosts"];
+            }
             if (typeID != null)
             {
                 posts = posts.Where(i => i.TypeId == typeID);
+                Session["TypeID"] = typeID;
+                ViewBag.Type = typeID;
+                Session["ListPosts"] = posts;
+            }
+            if (breedID != null)
+            {
+                posts = posts.Where(i => i.BreedId == breedID);
+                Session["ListPosts"] = posts;
+            }
+            if (typeID == breedID && typeID == null)
+            {
+                Session["TypeID"] = null;
+                Session["ListPosts"] = null;
+            }
+            return View(posts.ToList());
+        }
+
+        [HttpGet]
+        [Route("PetAnnouncements/ListforCity/{cityID?}")]
+        public ActionResult ListforCity(int? cityID)
+        {
+            List<PetAnnouncement> announcements = db.Announcements.ToList();
+            List<PetAnnouncementDTO> destinationAnnouncements = new List<PetAnnouncementDTO>();
+            var config = new MapperConfiguration(i => { i.CreateMap<PetAnnouncement, PetAnnouncementDTO>(); });
+            IMapper mapper = config.CreateMapper();
+            foreach (var i in announcements)
+            {
+                destinationAnnouncements.Add(mapper.Map<PetAnnouncement, PetAnnouncementDTO>(i));
+            }
+            var posts = destinationAnnouncements
+                .Where(i => i.Active == true)
+                .Select(i => new PetAnnouncementDTO()
+                {
+                    IDforUser = i.IDforUser,
+                    Age = i.Age,
+                    AnnouncementID = i.AnnouncementID,
+                    BreedId = i.BreedId,
+                    CityId = i.CityId,
+                    Date = i.Date,
+                    Demands = i.Demands,
+                    Explanation = i.Explanation,
+                    Title = i.Title,
+                    TypeId = i.TypeId,
+                    Photo = i.Photo
+                }).AsQueryable();
+            if (Session["ListPosts"] != null)
+            {
+                posts = (IQueryable<PetAnnouncementDTO>)Session["ListPosts"];
+                ViewBag.Type = Session["TypeID"];
+            }
+            if (cityID != null)
+            {
+                posts = posts.Where(i => i.CityId == cityID);
+                Session["CityPost"] = posts;
+            }
+            else
+            {
+                Session["CityPost"] = null;
+
             }
             return View(posts.ToList());
         }
@@ -77,6 +151,9 @@ namespace Animals.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PetAnnouncement petAnnouncement = db.Announcements.Find(id);
+            petAnnouncement.City = db.Cities.Find(petAnnouncement.CityId);
+            petAnnouncement.Breed = db.Breeds.Find(petAnnouncement.BreedId);
+            petAnnouncement.Type = db.PetTypes.Find(petAnnouncement.TypeId);
             if (petAnnouncement == null)
             {
                 return HttpNotFound();
@@ -90,7 +167,7 @@ namespace Animals.Controllers
         {
             List<SelectListItem> listTypes = new List<SelectListItem>();
             listTypes.Add(new SelectListItem() { Text = "Lütfen seçim yapınız.", Value = "0" });
-            foreach(var item in db.PetTypes)
+            foreach (var item in db.PetTypes)
             {
                 listTypes.Add(new SelectListItem() { Text = item.Type, Value = item.TypeID.ToString() });
             }
@@ -101,7 +178,7 @@ namespace Animals.Controllers
 
         public JsonResult GetBreeds(int? petType)
         {
-            var breeds = db.Breeds.Where(i=>i.IdofType==petType).ToList();
+            var breeds = db.Breeds.Where(i => i.IdofType == petType).ToList();
             List<SelectListItem> listBreeds = new List<SelectListItem>();
             //listBreeds.Add(new SelectListItem() { Text = "select state", Value = "0" });
             foreach (var item in breeds)
@@ -116,7 +193,7 @@ namespace Animals.Controllers
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AnnouncementID,TypeId,Age,CityId,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo,int BreedId)
+        public ActionResult Create([Bind(Include = "AnnouncementID,TypeId,Age,CityId,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo, int BreedId)
         {
 
             ViewBag.TypeId = new SelectList(db.PetTypes, "TypeID", "Type", petAnnouncement.TypeId);
