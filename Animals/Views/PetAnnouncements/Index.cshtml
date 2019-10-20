@@ -34,6 +34,13 @@
                             </h5>
                             <p class="card-text ">@(i.Explanation.Length > 50 ? i.Explanation.Substring(0, 47) + "..." : i.Explanation)</p>
                             <a href="/PetAnnouncements/Details/@i.AnnouncementID" class="btn btn-primary">Görüntüle</a>
+                            @if (Session["UserID"] != null && i.IDforUser == Convert.ToInt32(Session["UserID"].ToString()))
+                            {
+                                <p>
+                                    @Html.ActionLink("Edit", "Edit", new { id = i.AnnouncementID }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = i.AnnouncementID })
+                                </p>
+                            }
                         </div>
                     </div>
                 </div>

@@ -29,7 +29,7 @@
             <div class="form-group">
                 <label for="type" class="text-center">Evcil Hayvanın Türü</label>
                 <div class="col-md-10">
-                    @Html.DropDownList("TypeId", null, new { htmlAttributes = new { @class = "typeList form-control", id = "typeList" } })
+                    @Html.DropDownList("TypeId", null,new { htmlAttributes = new { @class = "typeList form-control", id = "typeList" } })
                     @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -43,17 +43,6 @@
                 </div>
             </div>
             <script>
-                //// var breeds = [1,2,3,4,5];
-                //var breeds = [{
-                //    IdofType: 1,
-                //    Breed: 'Bear',
-                //    BreedID: 4324
-                //},{
-                //    IdofType: 2,
-                //    Breed: 'Seagull',
-                //    BreedID: 7786
-                @*var breeds = ("@((List<Animals.Models.PetBreed>)TempData["Breeds"])");*@
-
                 window.addEventListener('load', function () {
                 const pet = document.getElementById('TypeId');
                 const petType = document.getElementById("select");
@@ -76,28 +65,6 @@
                 });
                     });
                 });
-                        //const selectedAnimalArray = ("breeds").filter((breed) => breed.IdofType == +event.target.value );
-                        //const selectedAnimal = selectedAnimalArray[0];
-                        //const option = document.createElement("option"),
-                        //    txt = document.createTextNode(selectedAnimal.Breed);
-
-                        //option.appendChild(txt);
-                        //option.setAttribute("value", selectedAnimal.BreedID)
-                        //petType.insertBefore(option, petType.lastChild);
-                // $(document).ready(function () {
-                //     $("#TypeId").change(function () {
-                //         var petType = document.getElementById("select");
-                //         breeds.forEach(function (element) {
-                //             if ($(this).val() == element.IdofType) {
-                //                 var option = document.createElement("OPTION"),
-                //                     txt = document.createTextNode(element.Breed);
-                //                 option.appendChild(txt);
-                //                 option.setAttribute("value", element.BreedID)
-                //                 petType.insertBefore(option, petType.lastChild);
-                //             }
-                //         });
-                //     });
-                // });
             </script>
 
             <div class="form-group">
@@ -141,16 +108,6 @@
                     @Html.ValidationMessageFor(model => model.Explanation, "", new { @class = "text-danger" })
                 </div>
             </div>
-
-            @*<div class="form-group">
-                    @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.Active)
-                            @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>*@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">

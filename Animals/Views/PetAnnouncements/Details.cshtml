@@ -74,9 +74,13 @@
 
         </dl>
     </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.AnnouncementID }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+
+    @if (Session["UserID"] != null && Model.IDforUser == Convert.ToInt32(Session["UserID"].ToString()))
+    {
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.AnnouncementID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = Model.AnnouncementID })
+        </p>
+    }
 </body>
 </html>

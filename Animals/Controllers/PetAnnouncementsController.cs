@@ -178,6 +178,7 @@ namespace Animals.Controllers
 
         public JsonResult GetBreeds(int? petType)
         {
+            ViewBag.vbBreedId = null;
             var breeds = db.Breeds.Where(i => i.IdofType == petType).ToList();
             List<SelectListItem> listBreeds = new List<SelectListItem>();
             //listBreeds.Add(new SelectListItem() { Text = "select state", Value = "0" });
@@ -219,6 +220,22 @@ namespace Animals.Controllers
         // GET: PetAnnouncements/Edit/5
         public ActionResult Edit(int? id)
         {
+            var petAnnouncementforEdit = db.Announcements.Find(id);
+            List<SelectListItem> listTypes = new List<SelectListItem>();
+            listTypes.Add(new SelectListItem() { Text = "Lütfen seçim yapınız.", Value = "0" });
+            foreach (var item in db.PetTypes)
+            {
+                listTypes.Add(new SelectListItem() { Text = item.Type, Value = item.TypeID.ToString() });
+            }
+            ViewBag.vbTypeId = new SelectList(listTypes, "Value", "Text", petAnnouncementforEdit.TypeId);
+            ViewBag.vbCityId = new SelectList(db.Cities, "CityID", "City", petAnnouncementforEdit.CityId);
+            var breeds = db.Breeds.Where(i => i.IdofType == petAnnouncementforEdit.TypeId).ToList();
+            List<SelectListItem> listBreeds = new List<SelectListItem>();
+            foreach (var item in breeds)
+            {
+                listBreeds.Add(new SelectListItem() { Text = item.Breed, Value = item.BreedID.ToString() });
+            }
+            ViewBag.vbBreedId = new SelectList(listBreeds, "Value", "Text", petAnnouncementforEdit.BreedId);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -230,19 +247,42 @@ namespace Animals.Controllers
             }
             return View(petAnnouncement);
         }
-
         // POST: PetAnnouncements/Edit/5
         // Aşırı gönderim saldırılarından korunmak için, lütfen bağlamak istediğiniz belirli özellikleri etkinleştirin, 
         // daha fazla bilgi için https://go.microsoft.com/fwlink/?LinkId=317598 sayfasına bakın.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "AnnouncementID,Type,Breed,Age,City,Photo,IDforUser,Date,Explanation,Title,Active")] PetAnnouncement petAnnouncement)
+        public ActionResult Edit([Bind(Include = "AnnouncementID,TypeId,Age,CityId,Explanation,Title")] PetAnnouncement petAnnouncement, HttpPostedFileBase Photo, int BreedId)
         {
+            ViewBag.vbTypeId = new SelectList(db.PetTypes, "TypeID", "Type", petAnnouncement.TypeId);
+            ViewBag.vbCityId = new SelectList(db.Cities, "CityID", "City", petAnnouncement.CityId);
+            if (BreedId == null)
+            {
+                ViewBag.vbBreedId = new SelectList(db.Breeds, "Value", "Text", petAnnouncement.BreedId);
+                BreedId = petAnnouncement.BreedId;
+            }
             if (ModelState.IsValid)
             {
-                db.Entry(petAnnouncement).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var petAnnouncementforEdit = db.Announcements.Find(petAnnouncement.AnnouncementID);
+                if (petAnnouncementforEdit != null)
+                {
+                    if (Photo != null)
+                    {
+                        var uid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
+                        string foto = uid + ".jpg";
+                        Photo.SaveAs(Server.MapPath(@"~\Image\") + foto);
+                        petAnnouncementforEdit.Photo = foto;
+                    }
+                    petAnnouncementforEdit.Title = petAnnouncement.Title;
+                    petAnnouncementforEdit.Age = petAnnouncement.Age;
+                    petAnnouncementforEdit.Explanation = petAnnouncement.Explanation;
+                    petAnnouncementforEdit.TypeId = petAnnouncement.TypeId;
+                    petAnnouncementforEdit.CityId = petAnnouncement.CityId;
+                    petAnnouncementforEdit.BreedId = BreedId;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+
+                }
             }
             return View(petAnnouncement);
         }
