@@ -8,7 +8,6 @@ namespace Animals.Models
 {
     public class Users
     {
-        [Key]
         public int UserID { get; set; }
         [Required(ErrorMessage = "*Lütfen kullanıcı adınızı giriniz.")]
         public string UserName { get; set; }

@@ -14,13 +14,10 @@
             <hr /><br /><br /><br />
 
             <div class="form-group">
-                <label for="email" class="text-center">E-Posta Adresi</label>
-                <label>@Html.ValidationMessage("EMail", "", new { @class = "text-danger" })</label>
-                @Html.TextBox("EMail", null, new { @class = "form-control", Type = "email" })
-               
-                @*<small class="form-text text-muted">
-                        Lütfen doğru bir e-posta adresi giriniz.
-                    </small>*@
+                <label for="username" class="text-center">Kullanıcı Adı</label>
+                <label>@Html.ValidationMessage("UserName", "", new { @class = "text-danger" })</label>
+                @Html.TextBox("UserName", null, new { @class = "form-control" })
+         
             </div>
 
             <div class="form-group">

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Animals.Identity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -6,21 +9,71 @@ using System.Web;
 
 namespace Animals.Models
 {
-    public class UserInitializer : DropCreateDatabaseIfModelChanges<AdoptionContext>
+    public class UserInitializer : CreateDatabaseIfNotExists<AdoptionContext>
     {
         protected override void Seed(AdoptionContext context)
         {
-            List<Users> users = new List<Users>()
+            //2 role 2 user 1 admin 2 person...
+            if (!context.Roles.Any(i => i.Name == "admin"))
             {
-                new Users(){UserName="ecemcmsv",Name="Ecem",LastName="Çamaşuvi",Contact="Do bir külah dondurma 5594949933",EMail="ecemcamasuvi@gmail.com",Password="Ecem123" },
-                new Users(){UserName="summerSun",Name="Summer",LastName="Time",Contact="Re masmavi bir dere 4343434434",EMail="summer4fun_97_notFake@gmail.com",Password="Ecem123" },
-                new Users(){UserName="gang_53",Name="Respect",LastName="Lol",Contact="Mi denizde bir gemi 232332122",EMail="e@gmail.com" ,Password="Ecem123"},
-            };
-            foreach (var person in users)
-            {
-                context.Users.Add(person);
+                var store = new RoleStore<ApplicationRole>(context);
+                var manager = new RoleManager<ApplicationRole>(store);
+
+                var role = new ApplicationRole(){
+                    Name="admin",Description= "yönetici rolü" };
+                manager.Create(role);
             }
-            context.SaveChanges();
+            if (!context.Roles.Any(i => i.Name == "user"))
+            {
+                var store = new RoleStore<ApplicationRole>(context);
+                var manager = new RoleManager<ApplicationRole>(store);
+
+                var role = new ApplicationRole() { Name="user", Description="user rolü" };
+                manager.Create(role);
+            }
+            if (!context.Users.Any(i => i.UserName == "ecemcamasuvi"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+
+                var user = new ApplicationUser()
+                {Name="Ecem",
+                Lastname="Çamaşuvi",
+                UserName="ecemcamasuvi",
+                Email="e@gmail.com",
+                Contact="Leave Ecem alone...",
+                };
+                manager.Create(user,"Ecem123");
+                manager.AddToRole(user.Id, "admin");
+                manager.AddToRole(user.Id, "user");
+            }
+            if (!context.Users.Any(i => i.UserName == "realLifeZombie"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+
+                var user = new ApplicationUser()
+                {Name="Ecem",
+                Lastname="The Zombie",
+                UserName= "realLifeZombie",
+                Email="herewegoagain@gmail.com",
+                Contact="Ecem wants to sleep",
+                };
+                manager.Create(user,"Ecem123");
+                manager.AddToRole(user.Id, "user");
+            }
+
+            //List<Register> users = new List<Register>()
+            //{
+            //    new Register(){UserName="ecemcmsv",Name="Ecem",LastName="Çamaşuvi",Contact="Do bir külah dondurma 5594949933",EMail="ecemcamasuvi@gmail.com",Password="Ecem123" },
+            //    new Register(){UserName="summerSun",Name="Summer",LastName="Time",Contact="Re masmavi bir dere 4343434434",EMail="summer4fun_97_notFake@gmail.com",Password="Ecem123" },
+            //    new Register(){UserName="gang_53",Name="Respect",LastName="Lol",Contact="Mi denizde bir gemi 232332122",EMail="e@gmail.com" ,Password="Ecem123"},
+            //};
+            //foreach (var person in users)
+            //{
+            //    context.Users.Add(person);
+            //}
+            //context.SaveChanges();
             List<PetType> petTypes = new List<PetType>()
             {
                 new PetType(){Type="Kedi"},
@@ -29,7 +82,7 @@ namespace Animals.Models
                 new PetType(){Type="Kuş"},
                 new PetType(){Type="Diğer"}
             };
-            foreach(var type in petTypes)
+            foreach (var type in petTypes)
             {
                 context.PetTypes.Add(type);
             }
@@ -118,7 +171,7 @@ namespace Animals.Models
                 new Cities(){City="Osmaniye"},
                 new Cities(){City="Düzce"}
             };
-            foreach(var i in cities)
+            foreach (var i in cities)
             {
                 context.Cities.Add(i);
             }

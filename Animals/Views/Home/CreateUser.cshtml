@@ -3,16 +3,13 @@
     ViewBag.Title = "CreateUser";
 }
 <div class="container p-1 bg-secondary .w-50 mx-auto my-5 .mh-100 " style="height:708px; width:808px">
-
     <div class="p-1 bg-light " style="height:700px;width:800px">
-
         @using (Html.BeginForm("CreateUser", "Home", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             <p class="text-center h3">Üye Ol</p>
             <hr />
             <div class="clearfix mt-4">
-
                 <div class="w-50 float-left">
                     <div class="form-group">
                         <label for="name">Ad</label>
@@ -22,7 +19,6 @@
                         @Html.TextBox("Name", null, new { @class = "form-control" })
                     </div>
                 </div>
-
                 <div class="w-50 float-left pl-2">
                     <div class="form-group">
                         <label for="lastname">Soyad</label>
@@ -32,7 +28,6 @@
                         @Html.TextBox("LastName", null, new { @class = "form-control" })
                     </div>
                 </div>
-
             </div>
 
             <div class="form-group">
@@ -66,18 +61,18 @@
                 </label>
                 @Html.TextBox("Password", null, new { @class = "form-control", Type = "password" })
             </div>
-            @* Add confirm password later *@
 
-            @*Onay checkbox'ı olmuyor off:(
-                <div class="custom-control custom-checkbox">
-                    @Html.CheckBox("Confirm", new { @class = "custom-control-input", Type = "checkbox" })
-                    <label class="custom-control-label" for="ch">Bilgilerimi Onaylıyorum</label>
-                </div>*@
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <label>
+                    @Html.ValidationMessage("rePassword", "", new { @class = "text-danger" })
+                </label>
+                @Html.TextBox("rePassword", null, new { @class = "form-control", Type = "password" })
+            </div>
 
             <br />
             <div class="text-center">
                 <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Üye Ol</button>
-
             </div>
         }
     </div>

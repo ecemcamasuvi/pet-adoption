@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Animals.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
@@ -7,14 +9,14 @@ using System.Web;
 
 namespace Animals.Models
 {
-    public class AdoptionContext : DbContext
+    public class AdoptionContext : IdentityDbContext<ApplicationUser>
     {
         public AdoptionContext() : base("dbConnection")
         {
             Database.SetInitializer(new UserInitializer());
         }
         [Key]
-        public DbSet<Users> Users { get; set; }
+        public DbSet<Register> Users { get; set; }
         public DbSet<PetAnnouncement> Announcements { get; set; }
         public DbSet<Questions> Questions { get; set; }
         public DbSet<Answers> Answers { get; set; }

@@ -27,9 +27,9 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                @if (Session["UserID"] != null)
+                @if (Request.IsAuthenticated)
                 {
-                    { Html.RenderAction("LoginPartial", "Home"); }
+                    { Html.Partial("LoginPartial"); }
                 }
                 else
                 {

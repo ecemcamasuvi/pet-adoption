@@ -1,0 +1,85 @@
+﻿@model Animals.Models.Users
+@{
+    ViewBag.Title = "Register";
+}
+<div class="container p-1 bg-secondary .w-50 mx-auto my-5 .mh-100 " style="height:708px; width:808px">
+
+    <div class="p-1 bg-light " style="height:700px;width:800px">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <p class="text-center h3">Üye Ol</p>
+            <hr />
+            <div class="clearfix mt-4">
+
+                <div class="w-50 float-left">
+                    <div class="form-group">
+                        <label for="name">Ad</label>
+                        <label>
+                            @Html.ValidationMessage("Name", "", new { @class = "text-danger" })
+                        </label>
+                        @Html.TextBox("Name", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="w-50 float-left pl-2">
+                    <div class="form-group">
+                        <label for="lastname">Soyad</label>
+                        <label>
+                            @Html.ValidationMessage("LastName", "", new { @class = "text-danger" })
+                        </label>
+                        @Html.TextBox("LastName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="userName" class="text-center">Kullanıcı Adı</label>
+                <label>
+                    @Html.ValidationMessage("UserName", "", new { @class = "text-danger" })
+                </label>
+                @Html.TextBox("UserName", null, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label for="message">İletişim Bilgileri</label>
+                <label>
+                    @Html.ValidationMessage("Contact", "", new { @class = "text-danger" })
+                </label>
+                @Html.TextArea("Contact", null, new { @class = "form-control", Rows = "3", Style = "resize:none" })
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-Posta</label>
+                <label>
+                    @Html.ValidationMessage("EMail", "", new { @class = "text-danger" })
+                </label>
+                @Html.TextBox("EMail", null, new { @class = "form-control", Type = "email" })
+            </div>
+
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <label>
+                    @Html.ValidationMessage("Password", "", new { @class = "text-danger" })
+                </label>
+                @Html.TextBox("Password", null, new { @class = "form-control", Type = "password" })
+            </div>
+            @* Add confirm password later *@
+
+            @*Onay checkbox'ı olmuyor off:(
+                <div class="custom-control custom-checkbox">
+                    @Html.CheckBox("Confirm", new { @class = "custom-control-input", Type = "checkbox" })
+                    <label class="custom-control-label" for="ch">Bilgilerimi Onaylıyorum</label>
+                </div>*@
+
+            <br />
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Üye Ol</button>
+
+            </div>
+        }
+    </div>
+</div>
+

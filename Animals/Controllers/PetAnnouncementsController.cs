@@ -256,11 +256,7 @@ namespace Animals.Controllers
         {
             ViewBag.vbTypeId = new SelectList(db.PetTypes, "TypeID", "Type", petAnnouncement.TypeId);
             ViewBag.vbCityId = new SelectList(db.Cities, "CityID", "City", petAnnouncement.CityId);
-            if (BreedId == null)
-            {
-                ViewBag.vbBreedId = new SelectList(db.Breeds, "Value", "Text", petAnnouncement.BreedId);
-                BreedId = petAnnouncement.BreedId;
-            }
+
             if (ModelState.IsValid)
             {
                 var petAnnouncementforEdit = db.Announcements.Find(petAnnouncement.AnnouncementID);
@@ -313,6 +309,11 @@ namespace Animals.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Demand(int? id)
+        {
+
+            return View();
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

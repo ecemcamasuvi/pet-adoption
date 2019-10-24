@@ -7,19 +7,32 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Animals.Identity;
 using Animals.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Animals.Controllers
 {
     public class UserController : Controller
     {
 
+        private UserManager<ApplicationUser> UserManager;
+        private RoleManager<ApplicationRole> RoleManager;
 
+        public UserController()
+        {
+            var userStore = new UserStore<ApplicationUser>(new AdoptionContext());
+            var roleStore = new RoleStore<ApplicationRole>(new AdoptionContext());
+            UserManager = new UserManager<ApplicationUser>(userStore);
+            RoleManager = new RoleManager<ApplicationRole>(roleStore);
+        }
         private AdoptionContext db = new AdoptionContext();
         // GET: User
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(UserManager.Users.ToList());
+            
         }
 
         // GET: User/Details/5
@@ -29,7 +42,7 @@ namespace Animals.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Users users = db.Users.Find(id);
+            Register users = db.Users.Find(id);
             if (users == null)
             {
                 return HttpNotFound();
@@ -50,33 +63,32 @@ namespace Animals.Controllers
 
         public ActionResult Profile()
         {
-            int userID = Convert.ToInt32(Session["UserID"].ToString());
-            Users user = db.Users.Where(i => i.UserID == userID).FirstOrDefault();
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            string userID = authManager.User.Identity.GetUserId();
+            var user = UserManager.FindById(userID);
             return View("Profile", user);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Profile([Bind(Include = "UserID,Name,LastName,Contact,EMail,UserName,Password")] Users users, string PasswordNew, string PasswordNew2)
+        public ActionResult Profile(Register model, string oldPassword, string UserID)
         {
-            if (PasswordNew == null && PasswordNew2 == null)
+            if (model.Password == null && model.rePassword == null)
             {
-
-                Users user = db.Users.Where(i => i.UserID.Equals(users.UserID)).FirstOrDefault();
-                if (user != null && user.Password.Equals(users.Password))
+                if (model != null && model.Password.Equals(model.rePassword))
                 {
+                    var entity = UserManager.FindById(UserID);
                     if (ModelState.IsValid)
                     {
-                        var entity = db.Users.Find(users.UserID);
                         if (entity != null)
                         {
-                            entity.Name = users.Name;
-                            entity.LastName = users.LastName;
-                            entity.Contact = users.Contact;
-                            entity.EMail = users.EMail;
-                            db.SaveChanges();
-                            TempData["User"] = users;
-                            return View(users);
+                            entity.Name = model.Name;
+                            entity.Lastname = model.LastName;
+                            entity.Contact = model.Contact;
+                            entity.Email = model.EMail;
+                            UserManager.Update(entity);
+                            TempData["User"] = model;
+                            return View(model);
                         }
                         //db.Entry(users).State = EntityState.Modified;
                     }
@@ -85,28 +97,22 @@ namespace Animals.Controllers
                 {
                     ViewBag.PasswordError = "Girdiğiniz şifre doğru değil.";
                 }
-                return View(users);
+                return View(model);
             }
             else
             {
-                Users user = db.Users.Where(i => i.UserID.Equals(users.UserID)).FirstOrDefault();
-                if (user != null && user.Password.Equals(users.Password))
+                ApplicationUser info = UserManager.FindById(UserID);
+                var user = UserManager.Find(info.UserName,oldPassword);
+                if (user != null)
                 {
-                    if (PasswordNew.Equals(PasswordNew2))
+                    if (model.Password.Equals(model.rePassword))
                     {
-                        if (!PasswordNew.Equals(users.Password))
+                        if (!model.Password.Equals(oldPassword))
                         {
                             if (ModelState.IsValid)
                             {
-                                var entity = db.Users.Find(users.UserID);
-                                if (entity != null)
-                                {
-                                    entity.Password = PasswordNew;
-                                    db.SaveChanges();
-                                    TempData["User"] = users;
-                                    return View(users);
-                                }
-
+                                UserManager.ChangePassword(info.Id,oldPassword,model.Password);
+                                return View(model);
                             }
                         }
                         else
@@ -124,7 +130,7 @@ namespace Animals.Controllers
                 {
                     ViewBag.PasswordChangeError = "Girdiğiniz şifre doğru değil.";
                 }
-                return View(users);
+                return View(model);
             }
             //return RedirectToAction("Profile", "Home", users);
         }
@@ -158,7 +164,7 @@ namespace Animals.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Users users = db.Users.Find(id);
+            Register users = db.Users.Find(id);
             if (users == null)
             {
                 return HttpNotFound();
@@ -171,7 +177,7 @@ namespace Animals.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Users users = db.Users.Find(id);
+            Register users = db.Users.Find(id);
             db.Users.Remove(users);
             db.SaveChanges();
             return RedirectToAction("Index");
