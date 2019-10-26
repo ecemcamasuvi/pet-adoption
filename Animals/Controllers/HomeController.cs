@@ -117,7 +117,13 @@ namespace Animals.Controllers
             //Session.Abandon();
             return RedirectToAction("Index");
         }
-
+        public PartialViewResult LoginPartial()
+        {
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            string userID = authManager.User.Identity.GetUserId();
+            var user = UserManager.FindById(userID);
+            return PartialView(user);
+        }
 
     }
 }

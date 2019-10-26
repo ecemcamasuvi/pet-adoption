@@ -29,7 +29,7 @@
             <ul class="navbar-nav ml-auto">
                 @if (Request.IsAuthenticated)
                 {
-                    { Html.RenderPartial("LoginPartial"); }
+                    { Html.RenderAction("LoginPartial","Home"); }
                 }
                 else
                 {

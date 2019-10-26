@@ -1,11 +1,10 @@
-﻿@model  Animals.Models.Users
-
+﻿@model Animals.Identity.ApplicationUser
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Hesabım
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <label class="dropdown-item">@(Model.Name + " " + Model.LastName)</label>
+        <label class="dropdown-item">@(Model.Name+" "+Model.Lastname)</label>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="/User/Profile">Profil</a>
         <a class="dropdown-item" href="/Home/Exit">Çıkış Yap</a>
