@@ -25,6 +25,8 @@ namespace Animals.Models
         public string EMail { get; set; }
         [Required(ErrorMessage = "*Lütfen şifrenizi giriniz.")]
         public string Password { get; set; }
+        [Required(ErrorMessage = "*Lütfen eski şifrenizi giriniz.")]
+        public string oldPassword { get; set; }
         [Required(ErrorMessage = "*Lütfen şifrenizi giriniz.")]
         [Compare("Password",ErrorMessage="Şifreleriniz uyuşmuyor")]
         public string rePassword { get; set; }

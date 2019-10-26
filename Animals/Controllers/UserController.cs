@@ -32,7 +32,7 @@ namespace Animals.Controllers
         public ActionResult Index()
         {
             return View(UserManager.Users.ToList());
-            
+
         }
 
         // GET: User/Details/5
@@ -71,27 +71,28 @@ namespace Animals.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Profile(Register model, string oldPassword, string UserID)
+        public ActionResult Profile(Register model)
         {
-            if (model.Password == null && model.rePassword == null)
+
+            if (model.Password == null || model.rePassword == null)
             {
-                if (model != null && model.Password.Equals(model.rePassword))
+                ApplicationUser info = UserManager.FindById(model.Id);
+                var user = UserManager.Find(info.UserName, model.Password);
+                if (model != null && user != null)
                 {
-                    var entity = UserManager.FindById(UserID);
-                    if (ModelState.IsValid)
+                    var entity = UserManager.FindById(model.Id);
+                    if (entity != null)
                     {
-                        if (entity != null)
-                        {
-                            entity.Name = model.Name;
-                            entity.Lastname = model.LastName;
-                            entity.Contact = model.Contact;
-                            entity.Email = model.EMail;
-                            UserManager.Update(entity);
-                            TempData["User"] = model;
-                            return View(model);
-                        }
-                        //db.Entry(users).State = EntityState.Modified;
+                        entity.Name = model.Name;
+                        entity.Lastname = model.LastName;
+                        entity.Contact = model.Contact;
+                        entity.Email = model.EMail;
+                        UserManager.Update(entity);
+                        TempData["User"] = entity;
+                        return View(entity);
                     }
+                    //db.Entry(users).State = EntityState.Modified;
+
                 }
                 else
                 {
@@ -101,18 +102,18 @@ namespace Animals.Controllers
             }
             else
             {
-                ApplicationUser info = UserManager.FindById(UserID);
-                var user = UserManager.Find(info.UserName,oldPassword);
+                ApplicationUser info = UserManager.FindById(model.Id);
+                var user = UserManager.Find(info.UserName, model.oldPassword);
                 if (user != null)
                 {
                     if (model.Password.Equals(model.rePassword))
                     {
-                        if (!model.Password.Equals(oldPassword))
+                        if (!model.Password.Equals(model.oldPassword))
                         {
                             if (ModelState.IsValid)
                             {
-                                UserManager.ChangePassword(info.Id,oldPassword,model.Password);
-                                return View(model);
+                                UserManager.ChangePassword(info.Id, model.oldPassword, model.Password);
+                                return View(user);
                             }
                         }
                         else

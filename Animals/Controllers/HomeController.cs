@@ -40,20 +40,23 @@ namespace Animals.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(Login model)
         {
-            var user = UserManager.Find(model.UserName, model.Password);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                var authManager = HttpContext.GetOwinContext().Authentication;
-                var identityClaims = UserManager.CreateIdentity(user, "ApplicationCookie");
-                var authProperties = new AuthenticationProperties();
-                authProperties.IsPersistent = model.RememberMe;
-                authManager.SignIn(authProperties, identityClaims);
-                //Session["UserID"] = user.Id;
-                return RedirectToAction("Profile", "User", user);
-            }
-            else
-            {
-                ModelState.AddModelError("userLoginError", "E-mail adresi ya da parola hatalı.");
+                var user = UserManager.Find(model.UserName, model.Password);
+                if (user != null)
+                {
+                    var authManager = HttpContext.GetOwinContext().Authentication;
+                    var identityClaims = UserManager.CreateIdentity(user, "ApplicationCookie");
+                    var authProperties = new AuthenticationProperties();
+                    authProperties.IsPersistent = model.RememberMe;
+                    authManager.SignIn(authProperties, identityClaims);
+                    //Session["UserID"] = user.Id;
+                    return RedirectToAction("Profile", "User", user);
+                }
+                else
+                {
+                    ModelState.AddModelError("userLoginError", "E-mail adresi ya da parola hatalı.");
+                }
             }
             //Register user = context.Users.Where(i => i.EMail.Equals(users.EMail) && i.Password.Equals(users.Password)).FirstOrDefault();
             //if (user != null)
@@ -79,10 +82,10 @@ namespace Animals.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateUser(Register model)
         {
+            model.oldPassword = model.Password;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser();
-                user.Id = model.Id;
+                ApplicationUser user = new ApplicationUser();
                 user.Name = model.Name;
                 user.Lastname = model.LastName;
                 user.UserName = model.UserName;
@@ -91,9 +94,9 @@ namespace Animals.Controllers
                 var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    if (RoleManager.RoleExists("User"))
+                    if (RoleManager.RoleExists("user"))
                     {
-                        UserManager.AddToRole(user.Id, "User");
+                        UserManager.AddToRole(user.Id, "user");
                     }
                     //Session["UserID"] = user.Id;
                     return RedirectToAction("Profile", "User", user);
