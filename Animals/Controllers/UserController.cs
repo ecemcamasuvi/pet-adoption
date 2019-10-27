@@ -73,14 +73,12 @@ namespace Animals.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Profile(Register model)
         {
-
-            if (model.Password == null || model.rePassword == null)
+            ApplicationUser info = UserManager.FindById(model.Id);
+            if (model.Password != null)
             {
-                ApplicationUser info = UserManager.FindById(model.Id);
-                var user = UserManager.Find(info.UserName, model.Password);
-                if (model != null && user != null)
+                var entity = UserManager.Find(info.UserName, model.Password);
+                if (model != null && entity != null)
                 {
-                    var entity = UserManager.FindById(model.Id);
                     if (entity != null)
                     {
                         entity.Name = model.Name;
@@ -89,22 +87,33 @@ namespace Animals.Controllers
                         entity.Email = model.EMail;
                         UserManager.Update(entity);
                         TempData["User"] = entity;
-                        return View(entity);
                     }
-                    //db.Entry(users).State = EntityState.Modified;
-
                 }
                 else
                 {
-                    ViewBag.PasswordError = "Girdiğiniz şifre doğru değil.";
+                    TempData["ErrorMessage"]="Girdiğiniz şifre doğru değil.";
                 }
-                return View(model);
             }
             else
             {
-                ApplicationUser info = UserManager.FindById(model.Id);
-                var user = UserManager.Find(info.UserName, model.oldPassword);
-                if (user != null)
+                TempData["ErrorMessage"]= "Şifre alanı boş bırakılamaz.";
+            }
+            return RedirectToAction("Profile",info);
+        }
+        //return RedirectToAction("Profile", "Home", users);
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProfilePassword(Register model)
+        {
+            ApplicationUser info = UserManager.FindById(model.Id);
+            if (model.Password == null || model.oldPassword == null || model.rePassword == null)
+            {
+                TempData["ErrorMessage"]="Şifre alanı boş bırakılamaz.";
+            }
+            else
+            {
+                if (UserManager.Find(info.UserName, model.oldPassword) != null)
                 {
                     if (model.Password.Equals(model.rePassword))
                     {
@@ -113,51 +122,27 @@ namespace Animals.Controllers
                             if (ModelState.IsValid)
                             {
                                 UserManager.ChangePassword(info.Id, model.oldPassword, model.Password);
-                                return View(user);
+                                TempData["User"] = info;
                             }
                         }
                         else
                         {
-                            ViewBag.PasswordChangeError = "Girdiğiniz şifre eskisiyle aynı.";
+                            TempData["ErrorMessage"]="Girdiğiniz şifre eskisiyle aynı.";
                         }
-                        //db.Entry(users).State = EntityState.Modified;
                     }
                     else
                     {
-                        ViewBag.PasswordChangeError = "Girdiğiniz şifreler uyuşmamaktadır.";
+                        TempData["ErrorMessage"]="Girdiğiniz şifreler uyuşmamaktadır.";
                     }
                 }
                 else
                 {
-                    ViewBag.PasswordChangeError = "Girdiğiniz şifre doğru değil.";
+                    TempData["ErrorMessage"]= "Girdiğiniz şifre doğru değil.";
                 }
-                return View(model);
             }
-            //return RedirectToAction("Profile", "Home", users);
+            return RedirectToAction("Profile", info);
         }
 
-        /*     [HttpPost]
-             [ValidateAntiForgeryToken]
-             public ActionResult EditPassword(int UserID, string PasswordEx, string PasswordNew, string PasswordNew2)
-             {
-                 if (PasswordEx.Equals(PasswordNew) || !PasswordNew.Equals(PasswordNew2))
-                 {
-                 }
-                 else
-                 {
-                     var entity = db.Users.Find();
-
-                     if (ModelState.IsValid)
-                     {
-                         db.Entry(users).State = EntityState.Modified;
-                         db.SaveChanges();
-                         return RedirectToAction("Index");
-                     }
-                 }
-             }
-                 return View();
-         }
-         */
         // GET: User/Delete/5
         public ActionResult Delete(int? id)
         {

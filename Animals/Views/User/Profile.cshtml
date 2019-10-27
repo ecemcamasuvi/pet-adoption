@@ -18,6 +18,8 @@
             @Html.AntiForgeryToken()
             @Html.Hidden("oldPassword", "oldPassword")
             @Html.Hidden("UserName", Model.UserName)
+            @Html.Hidden("Id", Model.Id)
+
             <div class="clearfix mt-4">
                 <div class="w-50 float-left">
                     <div class="form-group">
@@ -57,7 +59,7 @@
 
             <br />
             <div class="text-center">
-                @ViewBag.PasswordError
+                
                 <button type="button" class="btn btn-secondary btn-center" data-toggle="modal" data-target="#myModal" style="width:370px">Güncelle</button>
             </div>
 
@@ -84,18 +86,19 @@
                     </div>
 
                 </div>
-
             </div>
+            <label>@Html.ValidationSummary("", new { @class = "text-danger" })</label>
         }
     </div>
     <div class="p-3 bg-light " style="height:600px;width:400px;display:inline-block">
-        @using (Html.BeginForm("Profile", "User", FormMethod.Post))
+        @using (Html.BeginForm("ProfilePassword", "User", FormMethod.Post))
         {
             <p class="text-center h3">Şifre Güncelleme</p>
             <hr />
             @Html.AntiForgeryToken()
-            @Html.Hidden("Name",Model.Name)
-            @Html.Hidden("LastName",Model.Lastname)
+            @Html.Hidden("Name", Model.Name)
+            @Html.Hidden("Id", Model.Id)
+            @Html.Hidden("LastName", Model.Lastname)
             @Html.Hidden("Contact", Model.Contact)
             @Html.Hidden("EMail", Model.Email)
             @Html.Hidden("UserName", Model.UserName)
@@ -127,5 +130,8 @@
                 @ViewBag.PasswordChangeError
             </div>
         }
+    <label>
+        @TempData["ErrorMessage"]
+    </label>
     </div>
 </div>

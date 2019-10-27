@@ -50,7 +50,6 @@ namespace Animals.Controllers
                     var authProperties = new AuthenticationProperties();
                     authProperties.IsPersistent = model.RememberMe;
                     authManager.SignIn(authProperties, identityClaims);
-                    //Session["UserID"] = user.Id;
                     return RedirectToAction("Profile", "User", user);
                 }
                 else
@@ -58,15 +57,7 @@ namespace Animals.Controllers
                     ModelState.AddModelError("userLoginError", "E-mail adresi ya da parola hatalı.");
                 }
             }
-            //Register user = context.Users.Where(i => i.EMail.Equals(users.EMail) && i.Password.Equals(users.Password)).FirstOrDefault();
-            //if (user != null)
-            //{
-            //    return RedirectToAction("Profile", "User", user);
-            //}
-            //else if (users.EMail != null && users.Password != null)
-            //{
-            //    ViewBag.Error = "E-mail adresi ya da parola hatalı.";
-            //}
+        
             return View(model);
         }
         // GET: User/Create
