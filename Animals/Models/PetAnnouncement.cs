@@ -14,7 +14,7 @@ namespace Animals.Models
         [Required]
         public string Age { get; set; }
         public string Photo { get; set; }
-        public int IDforUser { get; set; }
+        public string IDforUser { get; set; }
         public string Date { get; set; }
         public string Explanation { get; set; }
         [Required]

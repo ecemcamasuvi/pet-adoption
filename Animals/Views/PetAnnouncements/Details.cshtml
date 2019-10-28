@@ -1,4 +1,5 @@
 ﻿@model Animals.Models.PetAnnouncement
+@using Microsoft.AspNet.Identity;
 
 <!DOCTYPE html>
 
@@ -75,14 +76,14 @@
         </dl>
     </div>
 
-    @if (Session["UserID"] != null && Model.IDforUser == Convert.ToInt32(Session["UserID"].ToString()))
+    @if (Request.IsAuthenticated && Model.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
     {
         <p>
             @Html.ActionLink("Edit", "Edit", new { id = Model.AnnouncementID }) |
             @Html.ActionLink("Delete", "Delete", new { id = Model.AnnouncementID })
         </p>
     }
-    else  if(Session["UserID"]!=null&&Model.IDforUser!= Convert.ToInt32(Session["UserID"].ToString()))
+    else if (Request.IsAuthenticated && !Model.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
     {
         <p>
             @Html.ActionLink("Talepte Bulun", "Demand", new { id = Model.AnnouncementID }) |

@@ -9,13 +9,26 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using Animals.Identity;
 using Animals.Models;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Animals.Controllers
 {
     public class PetAnnouncementsController : Controller
     {
+        private UserManager<ApplicationUser> UserManager;
+        private RoleManager<ApplicationRole> RoleManager;
+
+        public PetAnnouncementsController()
+        {
+            var userStore = new UserStore<ApplicationUser>(new AdoptionContext());
+            var roleStore = new RoleStore<ApplicationRole>(new AdoptionContext());
+            UserManager = new UserManager<ApplicationUser>(userStore);
+            RoleManager = new RoleManager<ApplicationRole>(roleStore);
+        }
         private AdoptionContext db = new AdoptionContext();
 
         // GET: PetAnnouncements
@@ -158,7 +171,7 @@ namespace Animals.Controllers
             {
                 return HttpNotFound();
             }
-            TempData["user"] = db.Users.Find(petAnnouncement.IDforUser);
+            TempData["user"] =UserManager.FindById(petAnnouncement.IDforUser) ;
             return View(petAnnouncement);
         }
 
@@ -206,7 +219,9 @@ namespace Animals.Controllers
                 string foto = uid + ".jpg";
                 Photo.SaveAs(Server.MapPath(@"~\Image\") + foto);
                 petAnnouncement.BreedId = BreedId;
-                petAnnouncement.IDforUser = Convert.ToInt32(Session["UserID"].ToString());
+                var authManager = HttpContext.GetOwinContext().Authentication;
+                string userID = authManager.User.Identity.GetUserId();
+                petAnnouncement.IDforUser = userID;
                 string format = "dd.MM.yyyy";
                 petAnnouncement.Date = DateTime.Now.ToString(format);
                 petAnnouncement.Active = true;
@@ -322,5 +337,6 @@ namespace Animals.Controllers
             }
             base.Dispose(disposing);
         }
+        
     }
 }

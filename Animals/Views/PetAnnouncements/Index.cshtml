@@ -1,8 +1,8 @@
 ﻿@using Animals.Models;
 @model IEnumerable<Animals.Models.PetAnnouncement>
+@using Microsoft.AspNet.Identity;
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="card card-body bg-light" style="width:1000px;transform:translateX(-100px);">
-        @if (Session["UserID"] != null)
+        @if (Request.IsAuthenticated)
         {
             <div container>
                 <h2>
@@ -34,7 +34,7 @@
                             </h5>
                             <p class="card-text ">@(i.Explanation.Length > 50 ? i.Explanation.Substring(0, 47) + "..." : i.Explanation)</p>
                             <a href="/PetAnnouncements/Details/@i.AnnouncementID" class="btn btn-primary">Görüntüle</a>
-                            @if (Session["UserID"] != null && i.IDforUser == Convert.ToInt32(Session["UserID"].ToString()))
+                            @if (Request.IsAuthenticated && i.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
                             {
                                 <p>
                                     @Html.ActionLink("Edit", "Edit", new { id = i.AnnouncementID }) |

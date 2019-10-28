@@ -90,6 +90,10 @@ namespace Animals.Controllers
                         UserManager.AddToRole(user.Id, "user");
                     }
                     //Session["UserID"] = user.Id;
+                    var authManager = HttpContext.GetOwinContext().Authentication;
+                    var identityClaims = UserManager.CreateIdentity(user, "ApplicationCookie");
+                    var authProperties = new AuthenticationProperties();
+                    authManager.SignIn(authProperties, identityClaims);
                     return RedirectToAction("Profile", "User", user);
                 }
                 else
