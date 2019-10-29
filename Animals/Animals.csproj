@@ -155,15 +155,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PetAnnouncementsController.cs" />
-    <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Identity\ApplicationRole.cs" />
     <Compile Include="Identity\ApplicationUser.cs" />
-    <Compile Include="Models\Answers.cs" />
     <Compile Include="Models\Cities.cs" />
+    <Compile Include="Models\DemandDTO.cs" />
     <Compile Include="Models\LikeDislikeAnswer.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\PetAnnouncementDTO.cs" />
@@ -172,7 +171,7 @@
     <Compile Include="Models\Demand.cs" />
     <Compile Include="Models\PetBreed.cs" />
     <Compile Include="Models\PetType.cs" />
-    <Compile Include="Models\Questions.cs" />
+    <Compile Include="Models\Post.cs" />
     <Compile Include="Models\UserInitializer.cs" />
     <Compile Include="Models\Register.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,11 +187,6 @@
     <Content Include="Views\PetAnnouncements\Details.cshtml" />
     <Content Include="Views\PetAnnouncements\Edit.cshtml" />
     <Content Include="Views\PetAnnouncements\Index.cshtml" />
-    <Content Include="Views\Questions\Create.cshtml" />
-    <Content Include="Views\Questions\Delete.cshtml" />
-    <Content Include="Views\Questions\Details.cshtml" />
-    <Content Include="Views\Questions\Edit.cshtml" />
-    <Content Include="Views\Questions\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
@@ -204,7 +198,8 @@
     <Content Include="Views\PetAnnouncements\List.cshtml" />
     <Content Include="Views\PetAnnouncements\CityList.cshtml" />
     <Content Include="Views\PetAnnouncements\ListforCity.cshtml" />
-    <Content Include="Views\PetAnnouncements\Demand.cshtml" />
+    <Content Include="Views\User\Message.cshtml" />
+    <Content Include="Views\User\Announcements.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -2,7 +2,27 @@
 @using Microsoft.AspNet.Identity;
 
 <!DOCTYPE html>
-
+@if (ViewBag.Demand != null)
+{
+    <div class="alert alert-success" role="alert">
+        @*<strong>@(TempData["User"].ToString())</strong>*@
+        <strong>@ViewBag.Demand</strong>
+    </div>
+}
+@if (ViewBag.preDemand != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @*<strong>@(TempData["User"].ToString())</strong>*@
+        <strong>@ViewBag.preDemand</strong>
+    </div>
+}
+@if (ViewBag.cancelDemand != null)
+{
+    <div class="alert alert-success" role="alert">
+        @*<strong>@(TempData["User"].ToString())</strong>*@
+        <strong>@ViewBag.cancelDemand</strong>
+    </div>
+}
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -85,9 +105,67 @@
     }
     else if (Request.IsAuthenticated && !Model.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
     {
-        <p>
-            @Html.ActionLink("Talepte Bulun", "Demand", new { id = Model.AnnouncementID }) |
-        </p>
+        using (Html.BeginForm("Details", "PetAnnouncements", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Hidden("IDforPet", Model.AnnouncementID)
+            @Html.Hidden("Date", DateTime.Now.ToString("dd.MM.yyyy"))
+            @Html.Hidden("State", false)
+            @Html.Hidden("Active", true)
+            if (ViewBag.preDemand == null&&ViewBag.Demand==null)
+            {
+                <p>
+                    <button type="button" class="btn btn-secondary btn-center" data-toggle="modal" data-target="#myModal" style="width:370px">Talepte Bulun</button>
+                </p>
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Onaylamak İçin Şifrenizi Giriniz</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="password">Lütfen talep mesajınızı yazınız.</label>
+                                    <label>
+                                        @Html.ValidationMessage("Message", "", new { @class = "text-danger" })
+                                    </label>
+                                    @Html.TextBox("Message", "", new { @class = "form-control", Rows = "3", Style = "height:150px;resize:none" })
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-secondary btn-center">Gönder</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p>
+                    <button type="button" class="btn btn-secondary btn-center" data-toggle="modal" data-target="#myModalCancel" style="width:370px">Talebi İptal Et</button>
+                </p>
+                <div class="modal fade" id="myModalCancel">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Emin misiniz?</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-secondary btn-center">Evet</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Hayır</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        }
+
     }
 </body>
 </html>

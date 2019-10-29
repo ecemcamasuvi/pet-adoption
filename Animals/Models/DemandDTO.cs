@@ -6,18 +6,14 @@ using System.Web;
 
 namespace Animals.Models
 {
-    public class Demand
+    public class DemandDTO
     {
-        [Key]
         public int DemandID { get; set; }
-        [Required]
         public int IDforPet { get; set; }
-        public string IDforUser { get; set; }
-        [Required(ErrorMessage = "*Lütfen mesaj alanını boş bırakmayınız.")]
+        public int IDforUser { get; set; }
         public string Message { get; set; }
         public string Date { get; set; }
         public bool State { get; set; } //1 for approval; during the evaluation 0
         public bool Active { get; set; } //0 for rejection; during the evaluation 1
-        public PetAnnouncement PetAnnouncement{ get; set; }
     }
 }

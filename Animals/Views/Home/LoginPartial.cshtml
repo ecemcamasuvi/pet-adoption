@@ -4,9 +4,13 @@
         Hesabım
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <label class="dropdown-item">@(Model.Name+" "+Model.Lastname)</label>
+        <label class="dropdown-item">@(Model.Name + " " + Model.Lastname)</label>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="/User/Profile">Profil</a>
+        <a class="dropdown-item" href="/User/Announcements">İlanlarım</a>
         <a class="dropdown-item" href="/Home/Exit">Çıkış Yap</a>
     </div>
+</li>
+<li class="navbar-item">
+    <a href="/User/Message" class="nav-link"><i class="fa fa-envelope"></i></a>
 </li>

@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Animals.Models.PetAnnouncement>
+@{
+    ViewBag.Title = "Message";
+}
+
+<h2>Message</h2>
+<div>
+    @foreach (var i in Model)
+    {
+        foreach(var j in i.Demands)
+        {
+            <p>
+                @j.Message
+            </p>
+        }
+    }
+</div>

@@ -91,14 +91,14 @@ namespace Animals.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"]="Girdiğiniz şifre doğru değil.";
+                    TempData["ErrorMessage"] = "Girdiğiniz şifre doğru değil.";
                 }
             }
             else
             {
-                TempData["ErrorMessage"]= "Şifre alanı boş bırakılamaz.";
+                TempData["ErrorMessage"] = "Şifre alanı boş bırakılamaz.";
             }
-            return RedirectToAction("Profile",info);
+            return RedirectToAction("Profile", info);
         }
         //return RedirectToAction("Profile", "Home", users);
 
@@ -109,7 +109,7 @@ namespace Animals.Controllers
             ApplicationUser info = UserManager.FindById(model.Id);
             if (model.Password == null || model.oldPassword == null || model.rePassword == null)
             {
-                TempData["ErrorMessage"]="Şifre alanı boş bırakılamaz.";
+                TempData["ErrorMessage"] = "Şifre alanı boş bırakılamaz.";
             }
             else
             {
@@ -127,17 +127,17 @@ namespace Animals.Controllers
                         }
                         else
                         {
-                            TempData["ErrorMessage"]="Girdiğiniz şifre eskisiyle aynı.";
+                            TempData["ErrorMessage"] = "Girdiğiniz şifre eskisiyle aynı.";
                         }
                     }
                     else
                     {
-                        TempData["ErrorMessage"]="Girdiğiniz şifreler uyuşmamaktadır.";
+                        TempData["ErrorMessage"] = "Girdiğiniz şifreler uyuşmamaktadır.";
                     }
                 }
                 else
                 {
-                    TempData["ErrorMessage"]= "Girdiğiniz şifre doğru değil.";
+                    TempData["ErrorMessage"] = "Girdiğiniz şifre doğru değil.";
                 }
             }
             return RedirectToAction("Profile", info);
@@ -177,5 +177,20 @@ namespace Animals.Controllers
             }
             base.Dispose(disposing);
         }
+        public ActionResult Message()
+        {
+            string userID = HttpContext.User.Identity.GetUserId();
+            var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID)).Include(i=>i.Demands);
+            
+            return View(myAnnouncements);
+        }
+     
+        public ActionResult Announcements()
+        {
+            string userID = HttpContext.User.Identity.GetUserId();
+            var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID));
+            return View(myAnnouncements);
+        }
+
     }
 }

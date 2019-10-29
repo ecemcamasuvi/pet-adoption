@@ -18,8 +18,7 @@ namespace Animals.Models
         [Key]
         public DbSet<Register> Users { get; set; }
         public DbSet<PetAnnouncement> Announcements { get; set; }
-        public DbSet<Questions> Questions { get; set; }
-        public DbSet<Answers> Answers { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<LikeDislikeAnswer> LikeDislikeAnswers { get; set; }
         public DbSet<Demand> Demands { get; set; }
         public DbSet<PetType> PetTypes { get; set; }

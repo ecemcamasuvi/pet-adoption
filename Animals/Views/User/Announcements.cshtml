@@ -1,0 +1,41 @@
+﻿@using Animals.Models;
+@model IEnumerable<Animals.Models.PetAnnouncement>
+@using Microsoft.AspNet.Identity;
+
+@{
+    ViewBag.Title = "Announcements";
+}
+
+<h2>Announcements</h2>
+<body>
+    <div class="card card-body bg-light" style="width:1000px;transform:translateX(-100px);">
+        <p>
+        </p>
+        <div class="row">
+            @foreach (var i in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card pt-3 " style="width: 18rem;">
+                        <div class="container" style="height: 15rem;">
+                            <img src="/Image/@i.Photo" class="card-img-top" style="height:100%;" alt="@i.Title">
+                        </div>
+                        <div class="card-body" style="height: 12rem; position:relative;">
+                            <h5 class="card-title">
+                                @(i.Title.Length > 30 ? i.Title.Substring(0, 27) + "..." : i.Title)
+                            </h5>
+                            <p class="card-text ">@(i.Explanation.Length > 50 ? i.Explanation.Substring(0, 47) + "..." : i.Explanation)</p>
+                            <a href="/PetAnnouncements/Details/@i.AnnouncementID" class="btn btn-primary">Görüntüle</a>
+                            @if (Request.IsAuthenticated && i.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
+                            {
+                                <p>
+                                    @Html.ActionLink("Edit", "Edit", new { id = i.AnnouncementID }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = i.AnnouncementID })
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>

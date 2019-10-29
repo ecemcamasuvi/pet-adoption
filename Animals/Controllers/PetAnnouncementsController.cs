@@ -159,6 +159,12 @@ namespace Animals.Controllers
         // GET: PetAnnouncements/Details/5
         public ActionResult Details(int? id)
         {
+            string userID = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
+            var previousDemand = db.Demands.Where(i => i.IDforUser.Equals(userID) && i.IDforPet == id);
+            if (previousDemand.Count() != 0)
+            { 
+                ViewBag.preDemand = "Daha önce bir talepte bulundunuz.";
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -171,7 +177,7 @@ namespace Animals.Controllers
             {
                 return HttpNotFound();
             }
-            TempData["user"] =UserManager.FindById(petAnnouncement.IDforUser) ;
+            TempData["user"] = UserManager.FindById(petAnnouncement.IDforUser);
             return View(petAnnouncement);
         }
 
@@ -323,11 +329,36 @@ namespace Animals.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        public ActionResult Demand(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details([Bind(Include = "DemandID,IDforPet,Message,Date,State,Active")] Demand demand)
         {
-
-            return View();
+            string userID = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
+            var previousDemand = db.Demands.Where(i => i.IDforUser.Equals(userID) && i.IDforPet == demand.IDforPet);
+            PetAnnouncement petAnnouncement = db.Announcements.Find(demand.IDforPet);
+            petAnnouncement.City = db.Cities.Find(petAnnouncement.CityId);
+            petAnnouncement.Breed = db.Breeds.Find(petAnnouncement.BreedId);
+            petAnnouncement.Type = db.PetTypes.Find(petAnnouncement.TypeId);
+            demand.PetAnnouncement = petAnnouncement;
+            if (petAnnouncement == null)
+            {
+                return HttpNotFound();
+            }
+            TempData["user"] = UserManager.FindById(petAnnouncement.IDforUser);
+            demand.IDforUser = userID;
+            if (previousDemand.Count()==0)
+            {
+                ViewBag.Demand = "Talebiniz alınmıştır.";
+                db.Demands.Add(demand);
+                db.SaveChanges();
+            }
+            else
+            {
+                ViewBag.cancelDemand = "Talebiniz iptal edilmiştir.";
+                db.Demands.Remove(previousDemand.First());
+                db.SaveChanges();
+            }
+            return View(petAnnouncement);
         }
         protected override void Dispose(bool disposing)
         {
@@ -337,6 +368,6 @@ namespace Animals.Controllers
             }
             base.Dispose(disposing);
         }
-        
+
     }
 }
