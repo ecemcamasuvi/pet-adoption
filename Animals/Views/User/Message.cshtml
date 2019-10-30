@@ -1,17 +1,20 @@
-﻿@model IEnumerable<Animals.Models.PetAnnouncement>
+﻿
 @{
     ViewBag.Title = "Message";
 }
+<head>
+    <title>Messages</title>
+</head>
+<body>
+    <div class="container-fluid p-3 bg-light">
+        <button type="button" class="btn btn-secondary btn-center" data-toggle="collapse" data-target="#incoming" style="width:370px">Gelen Mesajlar</button>
+        <button type="button" class="btn btn-secondary btn-center" data-toggle="collapse" data-target="#outgoing" style="width:370px">Giden Mesajlar</button>
+        <div class="collapse multi-collapse" id="incoming">
+            @{Html.RenderAction("IncomingMessage", "User");}
+        </div>
+        <div class="collapse multi-collapse" id="outgoing">
+            @{Html.RenderAction("OutgoingMessage", "User");}
+        </div>
+    </div>
 
-<h2>Message</h2>
-<div>
-    @foreach (var i in Model)
-    {
-        foreach(var j in i.Demands)
-        {
-            <p>
-                @j.Message
-            </p>
-        }
-    }
-</div>
+</body>

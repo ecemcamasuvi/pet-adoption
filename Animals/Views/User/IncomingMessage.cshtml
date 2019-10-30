@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Animals.Models.PetAnnouncement>
+@if (ViewBag.Success != null)
+{
+    <div class="alert alert-success" role="alert">
+        @*<strong>@(TempData["User"].ToString())</strong>*@
+        <strong>@ViewBag.Success</strong>
+    </div>
+}
+@if (ViewBag.Reject != null)
+{
+    <div class="alert alert-success" role="alert">
+        @*<strong>@(TempData["User"].ToString())</strong>*@
+        <strong>@ViewBag.Reject</strong>
+    </div>
+}
+<div class="p-3">
+    @foreach (var i in Model)
+    {
+        foreach (var j in i.Demands)
+        {
+            if (j.Active == true&&j.State==false)
+            {
+                <div class="table-bordered p-3">
+                    <header><small>@{Html.RenderAction("Who", "User", new { personID = j.IDforUser });} tarafından @Html.ActionLink(i.Title, "Details", "PetAnnouncements", new { id = i.AnnouncementID }, null) adlı gönderiye @j.Date tarihinde aşağıdaki talepte bulunulmuştur.</small></header>
+                    <i class="fa fa-angle-left text-danger"></i>
+                    <strong>@j.Message</strong>
+                    <footer class="float-right">
+                        <i class="fa fa-reply p-1" typeof="button" data-toggle="collapse" data-target="#reply"></i>
+                        <i class="fa fa-check p-1" typeof="button" data-toggle="modal" data-target="#accept"></i>
+                        <i class="fa fa-times p-1" typeof="button" data-toggle="modal" data-target="#reject"></i>
+                    </footer>
+
+                    <div class="collapse multi-collapse" id="reply">
+                        @{Html.RenderAction("MessageDetails", "User", new { messageID = j.DemandID });}
+                    </div>
+
+                    <div class="modal fade" id="reject">
+                        <div class="modal-dialog modal-sm modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Talebi Reddetmek İstediğinize Emin Misiniz?</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" value="Evet" class="btn btn-secondary btn-center" onclick="location.href='@Url.Action("DeleteDemand", "User",new {demandID=@j.DemandID })'">
+                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Hayır</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="accept">
+                        <div class="modal-dialog modal-sm modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Talebi Kabul Etmek İstediğinize Emin Misiniz?</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" value="Evet" class="btn btn-secondary btn-center" onclick="location.href='@Url.Action("AcceptDemand", "User",new {demandID=@j.DemandID })'">
+                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Hayır</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+</div>

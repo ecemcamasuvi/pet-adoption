@@ -180,7 +180,6 @@
     <Content Include="Views\web.config" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\User\Details.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\PetAnnouncements\Create.cshtml" />
     <Content Include="Views\PetAnnouncements\Delete.cshtml" />
@@ -198,8 +197,13 @@
     <Content Include="Views\PetAnnouncements\List.cshtml" />
     <Content Include="Views\PetAnnouncements\CityList.cshtml" />
     <Content Include="Views\PetAnnouncements\ListforCity.cshtml" />
-    <Content Include="Views\User\Message.cshtml" />
     <Content Include="Views\User\Announcements.cshtml" />
+    <Content Include="Views\User\IncomingMessage.cshtml" />
+    <Content Include="Views\User\OutgoingMessage.cshtml" />
+    <Content Include="Views\User\Message.cshtml" />
+    <Content Include="Views\User\Who.cshtml" />
+    <Content Include="Views\User\PersonsProfile.cshtml" />
+    <Content Include="Views\User\MessageDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

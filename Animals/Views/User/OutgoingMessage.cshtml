@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Animals.Models.Demand>
+
+<div class="p-3">
+
+    @foreach (var i in Model)
+    {
+        <p class="text-info">
+            <i class="fa fa-angle-right"></i>
+            @i.Message
+        </p>
+    }
+</div>

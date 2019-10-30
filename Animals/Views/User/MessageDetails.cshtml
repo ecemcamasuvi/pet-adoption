@@ -1,0 +1,13 @@
+﻿
+@using (Html.BeginForm("Profile", "User", FormMethod.Post))
+{
+    <div class="container-fluid p-3 bg-light">
+        <div class="form-group">
+            @Html.TextArea("myMessage", null, new { @class = "form-control", Rows = "3", Style = "resize:none" })
+        </div>
+    </div>
+    <div class="text-center">
+
+        <button type="button" class="btn btn-secondary btn-center" data-toggle="modal" data-target="#myModal" style="width:370px">Gönder</button>
+    </div>
+}

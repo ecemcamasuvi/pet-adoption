@@ -1,0 +1,50 @@
+﻿@model Animals.Identity.ApplicationUser
+@{
+    ViewBag.Title = "PersonsProfile";
+}
+
+<h2>PersonsProfile</h2>
+
+
+<p class="text-center h3">Kullanıcı Bilgilerim</p>
+<hr />
+<div class="form-group">
+    <label for="message">Kullanıcı Adı</label>
+    <label>
+        @Model.UserName
+    </label>
+</div>
+<div class="clearfix mt-4">
+    <div class="w-50 float-left">
+        <div class="form-group">
+            <label for="name">Ad</label>
+            <label>
+                @Model.Name
+            </label>
+        </div>
+    </div>
+    <div class="w-50 float-left pl-2">
+        <div class="form-group">
+            <label for="lastname">Soyad</label>
+            <label>
+                @Model.Lastname
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="message">İletişim Bilgileri</label>
+    <label>
+        @Model.Contact
+    </label>
+</div>
+
+<div class="form-group">
+    <label for="email">E-Posta</label>
+    <label>
+        @Model.Email
+    </label>
+</div>
+
+@Html.ActionLink("Kullanıcıya Ait İlanları Görüntüle", "Announcements", new { userID = Model.Id })

@@ -35,20 +35,7 @@ namespace Animals.Controllers
 
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Register users = db.Users.Find(id);
-            if (users == null)
-            {
-                return HttpNotFound();
-            }
-            return View(users);
-        }
+      
 
         public ActionResult Edit()
         {
@@ -177,19 +164,64 @@ namespace Animals.Controllers
             }
             base.Dispose(disposing);
         }
+        public PartialViewResult IncomingMessage()
+        {
+            string userID = HttpContext.User.Identity.GetUserId();
+            var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID)).Include(i => i.Demands);
+            return PartialView(myAnnouncements);
+        }
+        public PartialViewResult OutgoingMessage()
+        {
+            string userID = HttpContext.User.Identity.GetUserId();
+            var myDemands = db.Demands.Where(i => i.IDforUser.Equals(userID));
+            return PartialView(myDemands);
+        }
         public ActionResult Message()
         {
-            string userID = HttpContext.User.Identity.GetUserId();
-            var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID)).Include(i=>i.Demands);
-            
-            return View(myAnnouncements);
+            return View();
         }
-     
-        public ActionResult Announcements()
+        public ActionResult Announcements(string userID)
         {
-            string userID = HttpContext.User.Identity.GetUserId();
+            if (userID == null)
+            {
+                userID = HttpContext.User.Identity.GetUserId();
+            }
             var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID));
             return View(myAnnouncements);
+        }
+
+        public PartialViewResult Who(string personID)
+        {
+            var user = UserManager.FindById(personID);
+            return PartialView(user);
+        }
+        public ActionResult PersonsProfile(string personID)
+        {
+            var user = UserManager.FindById(personID);
+            return View(user);
+        }
+        public ActionResult DeleteDemand(int? demandID)
+        {
+            var demand = db.Demands.Find(demandID);
+            demand.Active = false;
+            ViewBag.Reject = "Talebi başarıyla reddettiniz.";
+            db.SaveChanges();
+            return RedirectToAction("Message");
+        }
+        public ActionResult AcceptDemand(int? demandID)
+        {
+            var demand = db.Demands.Find(demandID);
+            demand.State = true;
+            var announcement = db.Announcements.Find(demand.IDforPet);
+            announcement.Active = false;
+            ViewBag.Success = "Evlat edinme işlemini onayladınız.";
+            db.SaveChanges();
+            return RedirectToAction("Message");
+        }
+        public PartialViewResult MessageDetails(int? messageID)
+        {
+            var demand = db.Demands.Find(messageID);
+            return PartialView(demand);
         }
 
     }
