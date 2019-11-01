@@ -1,0 +1,15 @@
+﻿@model Animals.Models.Demand
+@{
+    ViewBag.Title = "Demand";
+}
+
+<div class="bg-white table-bordered">
+    <label>
+        Sahiplenen Kullanıcı Adı: @{Html.RenderAction("Who", "User", new { personID = Model.IDforUser });}
+    </label>
+
+    <label>
+        Tarih: @Model.Date
+    </label>
+
+</div>

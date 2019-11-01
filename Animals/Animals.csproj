@@ -162,7 +162,6 @@
     <Compile Include="Identity\ApplicationRole.cs" />
     <Compile Include="Identity\ApplicationUser.cs" />
     <Compile Include="Models\Cities.cs" />
-    <Compile Include="Models\DemandDTO.cs" />
     <Compile Include="Models\LikeDislikeAnswer.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\PetAnnouncementDTO.cs" />
@@ -204,6 +203,10 @@
     <Content Include="Views\User\Who.cshtml" />
     <Content Include="Views\User\PersonsProfile.cshtml" />
     <Content Include="Views\User\MessageDetails.cshtml" />
+    <Content Include="Views\User\Demand.cshtml" />
+    <Content Include="Views\User\IncomingDirectMessage.cshtml" />
+    <Content Include="Views\User\OutgoingDirectMessage.cshtml" />
+    <Content Include="Views\User\DirectMessageDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

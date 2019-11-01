@@ -24,12 +24,22 @@
                                 @(i.Title.Length > 30 ? i.Title.Substring(0, 27) + "..." : i.Title)
                             </h5>
                             <p class="card-text ">@(i.Explanation.Length > 50 ? i.Explanation.Substring(0, 47) + "..." : i.Explanation)</p>
-                            <a href="/PetAnnouncements/Details/@i.AnnouncementID" class="btn btn-primary">Görüntüle</a>
-                            @if (Request.IsAuthenticated && i.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
+                            @if (i.Active == true)
                             {
+                                <a href="/PetAnnouncements/Details/@i.AnnouncementID" class="btn btn-primary">Görüntüle</a>
                                 <p>
                                     @Html.ActionLink("Edit", "Edit", new { id = i.AnnouncementID }) |
                                     @Html.ActionLink("Delete", "Delete", new { id = i.AnnouncementID })
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    <a href="/PetAnnouncements/Details/@i.AnnouncementID" class="btn btn-primary">Görüntüle</a>
+                                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demand">Sahiplenildi</button>
+                                    <div class="collapse multi-collapse" id="demand">
+                                        @{Html.RenderAction("Demand", "User", new { id = i.Demands.Where(j => j.State == true).First().DemandID });}
+                                    </div>
                                 </p>
                             }
                         </div>

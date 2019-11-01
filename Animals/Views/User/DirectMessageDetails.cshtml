@@ -1,11 +1,13 @@
-﻿@model Animals.Models.Demand
+﻿
+@model Animals.Models.Post
 @using Microsoft.AspNet.Identity;
 
 @using (Html.BeginForm("MessageDetails", "User", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
+    @Html.Hidden("ParentPostID",Model.PostID)
     @Html.Hidden("IDforUser", HttpContext.Current.User.Identity.GetUserId())
-    @Html.Hidden("IDforDestination", Model.IDforUser)
+    @Html.Hidden("IDforDestination",Model.IDforUser)
     @Html.Hidden("Date", DateTime.Now.ToString("dd.MM.yyyy"))
     @Html.Hidden("Topic", "Direct message")
     @Html.Hidden("Title", null)

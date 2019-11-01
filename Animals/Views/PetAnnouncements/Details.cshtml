@@ -96,14 +96,14 @@
         </dl>
     </div>
 
-    @if (Request.IsAuthenticated && Model.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
+    @if (Request.IsAuthenticated && Model.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId())&&Model.Active==true)
     {
         <p>
             @Html.ActionLink("Edit", "Edit", new { id = Model.AnnouncementID }) |
             @Html.ActionLink("Delete", "Delete", new { id = Model.AnnouncementID })
         </p>
     }
-    else if (Request.IsAuthenticated && !Model.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId()))
+    else if (Request.IsAuthenticated && !Model.IDforUser.Equals(HttpContext.Current.User.Identity.GetUserId())&&Model.Active==true)
     {
         using (Html.BeginForm("Details", "PetAnnouncements", FormMethod.Post))
         {

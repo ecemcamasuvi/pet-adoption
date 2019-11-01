@@ -35,7 +35,7 @@ namespace Animals.Controllers
 
         }
 
-      
+
 
         public ActionResult Edit()
         {
@@ -167,14 +167,26 @@ namespace Animals.Controllers
         public PartialViewResult IncomingMessage()
         {
             string userID = HttpContext.User.Identity.GetUserId();
-            var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID)).Include(i => i.Demands);
+            var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID)).Include(i => i.Demands).OrderByDescending(i => i.AnnouncementID);
             return PartialView(myAnnouncements);
+        }
+        public PartialViewResult IncomingDirectMessage()
+        {
+            string userID = HttpContext.User.Identity.GetUserId();
+            var yourPosts = db.Posts.Include(i => i.Posts).Where(i => i.IDforDestination.Equals(userID)).OrderByDescending(i=>i.PostID);//someone else's messages
+            return PartialView(yourPosts);
         }
         public PartialViewResult OutgoingMessage()
         {
             string userID = HttpContext.User.Identity.GetUserId();
-            var myDemands = db.Demands.Where(i => i.IDforUser.Equals(userID));
+            var myDemands = db.Demands.Where(i => i.IDforUser.Equals(userID)).OrderByDescending(i => i.DemandID);
             return PartialView(myDemands);
+        }
+        public PartialViewResult OutgoingDirectMessage()
+        {
+            string userID = HttpContext.User.Identity.GetUserId();
+            var myPosts = db.Posts.Where(i => i.IDforUser.Equals(userID)).OrderByDescending(i => i.PostID);
+            return PartialView(myPosts);
         }
         public ActionResult Message()
         {
@@ -186,7 +198,7 @@ namespace Animals.Controllers
             {
                 userID = HttpContext.User.Identity.GetUserId();
             }
-            var myAnnouncements = db.Announcements.Where(i => i.IDforUser.Equals(userID));
+            var myAnnouncements = db.Announcements.Include(i => i.Demands).Where(i => i.IDforUser.Equals(userID));
             return View(myAnnouncements);
         }
 
@@ -210,6 +222,11 @@ namespace Animals.Controllers
         }
         public ActionResult AcceptDemand(int? demandID)
         {
+            var otherDemands = db.Demands.Where(i => i.DemandID != demandID);
+            foreach (var item in otherDemands)
+            {
+                item.Active = false; //rejected
+            }
             var demand = db.Demands.Find(demandID);
             demand.State = true;
             var announcement = db.Announcements.Find(demand.IDforPet);
@@ -221,6 +238,45 @@ namespace Animals.Controllers
         public PartialViewResult MessageDetails(int? messageID)
         {
             var demand = db.Demands.Find(messageID);
+            return PartialView(demand);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MessageDetails(Post post)
+        {
+            if (ModelState.IsValid)
+            {
+                post.Posts = new List<Post>();
+                post.ParentPostID = null;
+                db.Posts.Add(post);
+                db.SaveChanges();
+                return RedirectToAction("Message");
+            }
+            return PartialView(post);
+        }
+        public PartialViewResult DirectMessageDetails(int? postID)
+        {
+            var post = db.Posts.Find(postID);
+            post.Content = "";
+            return PartialView(post);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DirectMessageDetails(Post post)
+        {
+            if (ModelState.IsValid)
+            {
+                var parent=db.Posts.Include(i => i.Posts).Where(i => i.PostID == post.ParentPostID).First();
+                parent.Posts.Add(post);
+                db.Posts.Add(post);
+                db.SaveChanges();
+                return RedirectToAction("Message");
+            }
+            return PartialView(post);
+        }
+        public PartialViewResult Demand(int? id)
+        {
+            var demand = db.Demands.Find(id);
             return PartialView(demand);
         }
 

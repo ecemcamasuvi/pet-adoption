@@ -18,7 +18,7 @@
     {
         foreach (var j in i.Demands)
         {
-            if (j.Active == true&&j.State==false)
+            if (j.Active == true&&j.State==false&&i.Active==true)
             {
                 <div class="table-bordered p-3">
                     <header><small>@{Html.RenderAction("Who", "User", new { personID = j.IDforUser });} tarafından @Html.ActionLink(i.Title, "Details", "PetAnnouncements", new { id = i.AnnouncementID }, null) adlı gönderiye @j.Date tarihinde aşağıdaki talepte bulunulmuştur.</small></header>

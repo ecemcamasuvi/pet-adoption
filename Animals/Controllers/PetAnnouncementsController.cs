@@ -54,6 +54,7 @@ namespace Animals.Controllers
             var announcements = db.Announcements.Include(i => i.Type);
             announcements.Include(i => i.Breed);
             announcements.Include(i => i.City);
+            announcements = announcements.Where(i => i.Active == true);
             return View(announcements.ToList());
 
         }
@@ -162,7 +163,7 @@ namespace Animals.Controllers
             string userID = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
             var previousDemand = db.Demands.Where(i => i.IDforUser.Equals(userID) && i.IDforPet == id);
             if (previousDemand.Count() != 0)
-            { 
+            {
                 ViewBag.preDemand = "Daha önce bir talepte bulundunuz.";
             }
             if (id == null)
@@ -233,6 +234,7 @@ namespace Animals.Controllers
                 petAnnouncement.Active = true;
                 petAnnouncement.Photo = foto;
                 db.Announcements.Add(petAnnouncement);
+                petAnnouncement.Demands = new List<Demand>();
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -335,7 +337,7 @@ namespace Animals.Controllers
         {
             string userID = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
             var previousDemand = db.Demands.Where(i => i.IDforUser.Equals(userID) && i.IDforPet == demand.IDforPet);
-            PetAnnouncement petAnnouncement = db.Announcements.Find(demand.IDforPet);
+            PetAnnouncement petAnnouncement = db.Announcements.Include(i=>i.Demands).Where(i=>i.AnnouncementID==demand.IDforPet).First();
             petAnnouncement.City = db.Cities.Find(petAnnouncement.CityId);
             petAnnouncement.Breed = db.Breeds.Find(petAnnouncement.BreedId);
             petAnnouncement.Type = db.PetTypes.Find(petAnnouncement.TypeId);
@@ -346,9 +348,10 @@ namespace Animals.Controllers
             }
             TempData["user"] = UserManager.FindById(petAnnouncement.IDforUser);
             demand.IDforUser = userID;
-            if (previousDemand.Count()==0)
+            if (previousDemand.Count() == 0)
             {
                 ViewBag.Demand = "Talebiniz alınmıştır.";
+                petAnnouncement.Demands.Add(demand);
                 db.Demands.Add(demand);
                 db.SaveChanges();
             }

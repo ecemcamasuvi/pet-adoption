@@ -10,7 +10,7 @@ namespace Animals.Models
     {
         [Key]
         public int PostID { get; set; }
-        public int ParentPostID { get; set; }
+        public int? ParentPostID { get; set; }
         public Post ThePost { get; set; }
         public string IDforUser { get; set; }
         public string IDforDestination { get; set; } //In case of a direct message

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Animals.Models.Post>
+
+<div class="p-3">
+    @foreach (var i in Model)
+    {
+        <div class="table-bordered p-3">
+            <header><small>@{Html.RenderAction("Who", "User", new { personID = i.IDforUser });} tarafından @i.Date tarihinde gönderildi.</small></header>
+            <i class="fa fa-angle-left text-danger"></i>
+            <strong>@i.Content</strong>
+            <footer class="float-right">
+                
+                <i class="fa fa-reply p-1" typeof="button" data-toggle="collapse" data-target=#@i.PostID.ToString()></i>
+            </footer>
+            
+            <div class="collapse multi-collapse" id=@i.PostID.ToString()>
+                @{Html.RenderAction("DirectMessageDetails", "User", new { postID = i.PostID });}
+            </div>
+
+        </div>
+
+    }
+</div>
+
+
+
+

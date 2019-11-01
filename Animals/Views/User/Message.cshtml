@@ -11,9 +11,11 @@
         <button type="button" class="btn btn-secondary btn-center" data-toggle="collapse" data-target="#outgoing" style="width:370px">Giden Mesajlar</button>
         <div class="collapse multi-collapse" id="incoming">
             @{Html.RenderAction("IncomingMessage", "User");}
+            @{Html.RenderAction("IncomingDirectMessage", "User");}
         </div>
         <div class="collapse multi-collapse" id="outgoing">
             @{Html.RenderAction("OutgoingMessage", "User");}
+            @{Html.RenderAction("OutgoingDirectMessage", "User");}
         </div>
     </div>
 
