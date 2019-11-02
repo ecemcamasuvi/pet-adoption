@@ -162,7 +162,11 @@ namespace Animals.Controllers
         {
             string userID = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
             var previousDemand = db.Demands.Where(i => i.IDforUser.Equals(userID) && i.IDforPet == id);
-            if (previousDemand.Count() != 0)
+            if (previousDemand.Count() != 0 && previousDemand.First().Active == false)
+            {
+                ViewBag.Cancelled = "Talebiniz reddedilmiştir.";
+            }
+            else if(previousDemand.Count() != 0)
             {
                 ViewBag.preDemand = "Daha önce bir talepte bulundunuz.";
             }
@@ -337,7 +341,7 @@ namespace Animals.Controllers
         {
             string userID = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
             var previousDemand = db.Demands.Where(i => i.IDforUser.Equals(userID) && i.IDforPet == demand.IDforPet);
-            PetAnnouncement petAnnouncement = db.Announcements.Include(i=>i.Demands).Where(i=>i.AnnouncementID==demand.IDforPet).First();
+            PetAnnouncement petAnnouncement = db.Announcements.Include(i => i.Demands).Where(i => i.AnnouncementID == demand.IDforPet).First();
             petAnnouncement.City = db.Cities.Find(petAnnouncement.CityId);
             petAnnouncement.Breed = db.Breeds.Find(petAnnouncement.BreedId);
             petAnnouncement.Type = db.PetTypes.Find(petAnnouncement.TypeId);
@@ -353,6 +357,14 @@ namespace Animals.Controllers
                 ViewBag.Demand = "Talebiniz alınmıştır.";
                 petAnnouncement.Demands.Add(demand);
                 db.Demands.Add(demand);
+                db.SaveChanges();
+            }
+            else if(previousDemand.First().Active == false)
+            {
+                var demandUpdate = previousDemand.First();
+                demandUpdate.Active = true;
+                demandUpdate = demand;
+                ViewBag.Demand = "Talebiniz alınmıştır.";
                 db.SaveChanges();
             }
             else

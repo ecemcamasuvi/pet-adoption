@@ -1,12 +1,17 @@
 ﻿@model IEnumerable<Animals.Models.Post>
 
 <div class="p-3">
-
     @foreach (var i in Model)
     {
-        <p class="text-info">
-            <i class="fa fa-angle-right"></i>
-            @i.Content
-        </p>
+
+        <div class="table-bordered p-3">
+            <header><small>@{Html.RenderAction("Who", "User", new { personID = i.IDforDestination });} kişisine @i.Date tarihinde gönderildi.</small></header>
+            <i class="fa fa-angle-left text-danger"></i>
+            <strong>@i.Content</strong>
+            <div class="collapse multi-collapse" id=@i.PostID.ToString()>
+                @{Html.RenderAction("DirectMessageDetails", "User", new { postID = i.PostID });}
+            </div>
+
+        </div>
     }
 </div>

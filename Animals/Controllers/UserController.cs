@@ -179,7 +179,7 @@ namespace Animals.Controllers
         public PartialViewResult OutgoingMessage()
         {
             string userID = HttpContext.User.Identity.GetUserId();
-            var myDemands = db.Demands.Where(i => i.IDforUser.Equals(userID)).OrderByDescending(i => i.DemandID);
+            var myDemands = db.Demands.Include(i=>i.PetAnnouncement).Where(i => i.IDforUser.Equals(userID)).OrderByDescending(i => i.DemandID);
             return PartialView(myDemands);
         }
         public PartialViewResult OutgoingDirectMessage()
@@ -212,11 +212,19 @@ namespace Animals.Controllers
             var user = UserManager.FindById(personID);
             return View(user);
         }
-        public ActionResult DeleteDemand(int? demandID)
+        public ActionResult CancelDemand(int? demandID)
         {
             var demand = db.Demands.Find(demandID);
             demand.Active = false;
             ViewBag.Reject = "Talebi başarıyla reddettiniz.";
+            db.SaveChanges();
+            return RedirectToAction("Message");
+        }
+        public ActionResult DeleteDemand(int? demandID)
+        {
+            var demand = db.Demands.Find(demandID);
+            db.Demands.Remove(demand);
+            ViewBag.Cancel = "Talebi başarıyla iptal ettiniz.";
             db.SaveChanges();
             return RedirectToAction("Message");
         }

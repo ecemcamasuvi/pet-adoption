@@ -1,12 +1,41 @@
 ﻿@model IEnumerable<Animals.Models.Demand>
-
+@if (ViewBag.Cancel != null)
+{
+    <div class="alert alert-success" role="alert">
+        @*<strong>@(TempData["User"].ToString())</strong>*@
+        <strong>@ViewBag.Cancel</strong>
+    </div>
+}
 <div class="p-3">
 
     @foreach (var i in Model)
     {
-        <p class="text-info">
-            <i class="fa fa-angle-right"></i>
-            @i.Message
-        </p>
+        if (i.PetAnnouncement.Active == true && i.State == false && i.Active == true)
+        {
+            <div class="table-bordered p-3">
+                <header><small>@{Html.RenderAction("Who", "User", new { personID = i.PetAnnouncement.IDforUser });} tarafından yayınlanan @Html.ActionLink(i.PetAnnouncement.Title, "Details", "PetAnnouncements", new { id = i.PetAnnouncement.AnnouncementID }, null) adlı gönderiye @i.Date tarihinde aşağıdaki talepte bulunulmuştur.</small></header>
+                <i class="fa fa-angle-left text-danger"></i>
+                <strong>@i.Message</strong>
+                <footer class="float-right">
+                    <i class="fa fa-times p-1" typeof="button" data-toggle="modal" data-target="#reject"></i>
+                </footer>
+
+                <div class="modal fade" id="reject">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Talebi İptal Etmek İstediğinize Emin Misiniz?</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" value="Evet" class="btn btn-secondary btn-center" onclick="location.href='@Url.Action("DeleteDemand", "User", new { demandID = @i.DemandID })'">
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Hayır</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
     }
 </div>
