@@ -155,6 +155,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PetAnnouncementsController.cs" />
+    <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -170,7 +171,9 @@
     <Compile Include="Models\Demand.cs" />
     <Compile Include="Models\PetBreed.cs" />
     <Compile Include="Models\PetType.cs" />
+    <Compile Include="Models\PostDTO.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\PostTopics.cs" />
     <Compile Include="Models\UserInitializer.cs" />
     <Compile Include="Models\Register.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -207,6 +210,13 @@
     <Content Include="Views\User\IncomingDirectMessage.cshtml" />
     <Content Include="Views\User\OutgoingDirectMessage.cshtml" />
     <Content Include="Views\User\DirectMessageDetails.cshtml" />
+    <Content Include="Views\Post\Index.cshtml" />
+    <Content Include="Views\Post\Details.cshtml" />
+    <Content Include="Views\Post\Answers.cshtml" />
+    <Content Include="Views\Post\Create.cshtml" />
+    <Content Include="Views\Post\Topic.cshtml" />
+    <Content Include="Views\Post\List.cshtml" />
+    <Content Include="Views\Post\CreateAnswer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

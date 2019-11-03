@@ -87,6 +87,23 @@ namespace Animals.Models
                 context.PetTypes.Add(type);
             }
             context.SaveChanges();
+            List<PostTopics> postTopics = new List<PostTopics>()
+            {
+                new PostTopics(){Topic="Kedi Bakımı"},
+                new PostTopics(){Topic="Köpek Bakımı"},
+                new PostTopics(){Topic="Balık Bakımı"},
+                new PostTopics(){Topic="Kuş Bakımı"},
+                new PostTopics(){Topic="Diğer Hayvanların Bakımı"},
+                new PostTopics(){Topic="Evcil Hayvan Aksesuarları"},
+                new PostTopics(){Topic="Kampanya"},
+                new PostTopics(){Topic="Diğer"},
+               
+            };
+            foreach (var topic in postTopics)
+            {
+                context.PostTopics.Add(topic);
+            }
+            context.SaveChanges();
             List<Cities> cities = new List<Cities>()
             {
                 new Cities(){City="Adana"},

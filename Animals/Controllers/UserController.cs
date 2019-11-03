@@ -185,7 +185,7 @@ namespace Animals.Controllers
         public PartialViewResult OutgoingDirectMessage()
         {
             string userID = HttpContext.User.Identity.GetUserId();
-            var myPosts = db.Posts.Where(i => i.IDforUser.Equals(userID)).OrderByDescending(i => i.PostID);
+            var myPosts = db.Posts.Where(i => i.IDforUser.Equals(userID)&&i.IsPublic==false).OrderByDescending(i => i.PostID);
             return PartialView(myPosts);
         }
         public ActionResult Message()

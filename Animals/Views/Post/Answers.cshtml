@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Animals.Models.Post>
+
+@foreach (var i in Model)
+{
+    <div class="table-bordered p-3">
+        <header class="fa-angle-left"><small>@{Html.RenderAction("Who", "User", new { personID = i.IDforUser });} tarafından @i.Date tarihinde gönderildi.</small></header>
+        <i class="fa fa-angle-left text-danger"></i>
+        <strong>@i.Content</strong>
+    </div>
+}

@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@using Animals.Models;
+@model IEnumerable<Animals.Models.Post>
+@using Microsoft.AspNet.Identity;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="card card-body bg-light" style="width:1000px;transform:translateX(-100px);">
+        @if (Request.IsAuthenticated)
+        {
+            <div container>
+                <h2>
+                    @Html.ActionLink("Soru Sor ", "Create")
+                </h2>
+            </div>
+        }
+        <p>
+        </p>
+        <div class="row">
+            @foreach (var i in Model)
+            {
+            <div class="list-group">
+                <input type="button" value="@(i.Content.Length > 50 ? i.Content.Substring(0, 47) + "..." : i.Content)" class="list-group-item list-group-item-action" onclick="location.href='@Url.Action("Details", "Post",new {id=@i.PostID })'">
+            </div>
+            }
+        </div>
+    </div>
+    @section RightSection
+    {
+        @{Html.RenderAction("Topic");}
+    }
+</body>
+</html>

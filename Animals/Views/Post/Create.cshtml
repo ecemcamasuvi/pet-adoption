@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+@using Microsoft.AspNet.Identity;
+@model Animals.Models.Post
+<!DOCTYPE html>
+@*@if (TempData["Breeds"] != null)
+    {
+        // todo: altta elle girdigim breeds arrayini dinamik olarak basmaya calis
+        var breedList = (List<Animals.Models.PetBreed>)TempData["Breeds"];
+
+    }*@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @using (Html.BeginForm("Create", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("ParentPostID", null)
+        @Html.Hidden("IDforUser", HttpContext.Current.User.Identity.GetUserId())
+        @Html.Hidden("IDforDestination", null)
+        @Html.Hidden("Date", DateTime.Now.ToString("dd.MM.yyyy"))
+        @Html.Hidden("IsPublic", true)
+        @Html.Hidden("Topic", "Question")
+
+
+        <div class="container pb-5 form-horizontal">
+            <h4>Yeni Soru Sor</h4>
+            <hr />
+            <div class="form-group">
+                <label for="title" class="text-center">Başlık</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Title , new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city" class="text-center">Şehir</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("TopicId", null, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TopicId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="explanation" class="text-center">Açıklama</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Content , new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>
+

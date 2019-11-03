@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Details";
+}
+@using Microsoft.AspNet.Identity;
+@model Animals.Models.Post
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="container-fluid p-3 bg-light">
+        <h2>@Model.Title</h2>
+        <div class="table-bordered p-3 table-bordered">
+            <header>
+                <small>@{Html.RenderAction("Who", "User", new { personID = Model.IDforUser });} tarafından @Model.Date tarihinde gönderildi.</small>
+            </header>
+            <i class="fa fa-angle-left text-danger"></i>
+            <strong>@Model.Content</strong>
+        </div>
+        @{Html.RenderAction("Answers", "Post", new { parentID = Model.PostID });}
+
+    </div>
+    @{Html.RenderAction("CreateAnswer", "Post", new { parentID = Model.PostID });}
+
+
+</body>
+</html>

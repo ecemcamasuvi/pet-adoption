@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNet.Identity;
+@model int
+<div class="container-fluid p-3 bg-light">
+
+    @using (Html.BeginForm("Details", "Post", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("IDforUser", HttpContext.Current.User.Identity.GetUserId())
+        @Html.Hidden("ParentPostID", Model)
+        @Html.Hidden("IDforDestination", null)
+        @Html.Hidden("Date", DateTime.Now.ToString("dd.MM.yyyy"))
+        @Html.Hidden("Title", null)
+        @Html.Hidden("IsPublic", true)
+        @Html.Hidden("Topic", "Answer")
+
+        <div class="container-fluid p-3 bg-light">
+            <div class="form-group">
+                @Html.TextArea("Content", null, new { @class = "form-control", Rows = "3", Style = "resize:none" })
+            </div>
+        </div>
+        <div class="text-center">
+
+            <button type="submit" class="btn btn-secondary btn-center" style="width:370px">Gönder</button>
+        </div>
+    }
+</div>

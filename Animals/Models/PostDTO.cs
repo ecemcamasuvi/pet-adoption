@@ -6,9 +6,8 @@ using System.Web;
 
 namespace Animals.Models
 {
-    public class Post
+    public class PostDTO
     {
-        [Key]
         public int PostID { get; set; }
         public int? ParentPostID { get; set; }
         public Post ThePost { get; set; }

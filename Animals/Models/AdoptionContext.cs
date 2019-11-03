@@ -24,6 +24,7 @@ namespace Animals.Models
         public DbSet<PetType> PetTypes { get; set; }
         public DbSet<Cities> Cities { get; set; }
         public DbSet<PetBreed> Breeds { get; set; }
+        public DbSet<PostTopics> PostTopics { get; set; }
         
     }
 }
